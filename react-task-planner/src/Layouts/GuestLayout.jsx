@@ -11,7 +11,7 @@ const GuestLayout = () => {
   }
 
   return (
-    <div className="guest-background min-h-screen">
+    <div className="guest-background min-h-screen z-0">
       <div className="container flex justify-center items-center mx-auto min-h-screen pb-20 pt-5">
         <Outlet />
       </div>
