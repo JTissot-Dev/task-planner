@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
+import "./layout.css";
 
 
 const GuestLayout = () => {
@@ -10,8 +11,10 @@ const GuestLayout = () => {
   }
 
   return (
-    <div>
-      <Outlet />
+    <div className="guest-background min-h-screen">
+      <div className="container flex justify-center items-center mx-auto min-h-screen pb-20 pt-5">
+        <Outlet />
+      </div>
     </div>
   )
 }
