@@ -1,4 +1,4 @@
-export const ShowPasswordIcon = ({ onMouseOver, onMouseLeave }) => {
+export const ShowPasswordIcon = ({ onMouseEnter, onMouseLeave }) => {
 	return (
 			<>
 				<svg 
@@ -7,7 +7,7 @@ export const ShowPasswordIcon = ({ onMouseOver, onMouseLeave }) => {
 					xmlns="http://www.w3.org/2000/svg" 
 					fill="none" 
 					viewBox="0 0 20 14"
-					onMouseOver={ onMouseOver }
+					onMouseEnter={ onMouseEnter }
 					onMouseLeave={ onMouseLeave }>
 					<g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 						<path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>

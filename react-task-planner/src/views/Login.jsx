@@ -1,5 +1,4 @@
 import { Label, TextInput, Button } from "flowbite-react";
-import Signup from "./Signup";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { ShowPasswordIcon } from "../components/icons";
@@ -14,18 +13,21 @@ const Login = () => {
 
   return (
     <>
-      <form className="z-20 w-screen sm:w-96 flex py-7 px-10 flex-col gap-4 border-4 border-opacity-50 rounded-lg border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 mx-3 shadow-md">
+      <form className="z-20 w-screen sm:w-96 mx-3 sm:mx-0 flex py-5 px-8 flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 shadow-md">
+        <div>
+          <img src="/logo/brand-logo.png"></img>
+        </div>
         <div className="mb-10">
-          <div className="mb-2 block">
+          <div className="mb-2 mt-5 block">
             <Label
               className="text-zinc-50"
               htmlFor="email1"
-              value="Your email"
+              value="Adresse e-mail"
             />
           </div>
           <TextInput
             id="email1"
-            placeholder="name@flowbite.com"
+            placeholder="nom.prenom@taskplanner.com"
             required
             type="email"
           />
@@ -35,7 +37,7 @@ const Login = () => {
             <Label
               className="text-zinc-50"
               htmlFor="password1"
-              value="Your password"
+              value="Mot de passe"
             />
           </div>
           <div className="relative">
@@ -45,7 +47,7 @@ const Login = () => {
               type={ passwordShow ? "text" : "password" }
             />
               <ShowPasswordIcon 
-                onMouseOver={ togglePassword }
+                onMouseEnter={ togglePassword }
                 onMouseLeave={ togglePassword }
               />
           </div>
@@ -55,11 +57,11 @@ const Login = () => {
             type="submit"
             gradientDuoTone="purpleToBlue"
             outline
-            className="w-28 float-right">
+            className="w-32 float-right bg-transparent">
             Connexion
           </Button>
         </div>
-          <Link className="text-zinc-50 underline underline-offset-1 text-center" to="/signup">Créer un compte</Link>
+        <Link className="text-zinc-50 underline underline-offset-1 text-center" to="/signup">Créer un compte</Link>
       </form>
     </>
   )
