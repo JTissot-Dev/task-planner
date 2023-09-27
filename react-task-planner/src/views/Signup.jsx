@@ -2,6 +2,9 @@ import { Label, TextInput, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { ShowPasswordIcon } from "../components/icons";
 import { useState } from "react";
+import axiosClient from "../axios-client";
+import { useStateContext } from "../context/ContextProvider";
+import MotionGuestForms from "../components/MotionGuestForms";
 
 
 const Signup = () => {
@@ -23,6 +26,8 @@ const Signup = () => {
     passwordConfirmationError: ""
   })
 
+  const {setUser, setToken} = useStateContext();
+
   const firstNameHandler = e => {
     setFormInputValue({
       ...formInputValue,
@@ -42,26 +47,30 @@ const Signup = () => {
       ...formInputValue,
       email: e.target.value
     })
-
-    setEntryError({
-      ...entryError,
-      emailError: (!emailRegex.test(e.target.value) && e.target.value.length > 0) &&
-      "Adresse e-mail invalide"
-    })       
   }
 
+    const emailErrorHandler = e => {
+      setEntryError({
+        ...entryError,
+        emailError: (!emailRegex.test(e.target.value) && e.target.value.length > 0) &&
+        "Adresse e-mail invalide"
+      }) 
+    }
+          
   const passwordHandler = e => {
     setFormInputValue({
       ...formInputValue,
       password: e.target.value
     })
-
-    setEntryError({
-      ...entryError,
-      passwordError: (!passwordRegex.test(e.target.value) && e.target.value.length > 0) &&
-      "Mot de passe: au moin une majuscule et > 8 caractères"
-    })       
   }
+
+    const passwordErrorHandler = e => {
+      setEntryError({
+        ...entryError,
+        passwordError: (!passwordRegex.test(e.target.value) && e.target.value.length > 0) &&
+        "Mot de passe: au moin une majuscule et > 8 caractères"
+      })
+    }
 
   const passwordConfirmationHandler = e => {
     setFormInputValue({
@@ -78,12 +87,30 @@ const Signup = () => {
   
   const signupSubmit = e => {
     e.preventDefault();
+    const payload = {
+      firstName: formInputValue.firstName,
+      lastName: formInputValue.lastName,
+      email: formInputValue.email,
+      password: formInputValue.password
+    }
+
+    axiosClient.post("/signup", payload)
+      .then(({data}) => {
+        setUser(`${data.firstName}_${data.lastName}`);
+        setToken(data.token);
+      })
+      .catch(error => {
+        const response = error.response;
+        if (response && response.status === 422) {
+          console.log(response.data.errors);
+        }
+      })
   }
 
   return (
-    <>
+    <MotionGuestForms>
       <form 
-        className="z-20 w-screen sm:w-96 mx-3 sm:mx-0 flex py-4 px-8 flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 shadow-md"
+        className="flex w-full py-4 px-8 flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 shadow-md"
         onSubmit={ signupSubmit }
         >
         <legend className="text-2xl text-zinc-50 mb-5">
@@ -139,6 +166,7 @@ const Signup = () => {
             sizing="sm"
             value={ formInputValue.email }
             onChange={ emailHandler }
+            onBlur={ emailErrorHandler }
           />
           <div className="text-xs h-1 text-red-700">
             { entryError.emailError }
@@ -160,6 +188,7 @@ const Signup = () => {
               sizing="sm"
               value={ formInputValue.password }
               onChange={ passwordHandler }
+              onBlur={ passwordErrorHandler }
             />
             <div className="text-xs h-1 text-red-700">
             { entryError.passwordError }
@@ -188,7 +217,7 @@ const Signup = () => {
             </div>
           </div>
         </div>
-        <div className="mb-10">
+        <div className="mb-7">
           <Button
             type="submit"
             gradientDuoTone="purpleToBlue"
@@ -197,9 +226,9 @@ const Signup = () => {
             S'inscrire
           </Button>
         </div>
-        <Link className="text-zinc-50 underline underline-offset-1 text-center" to="/login">Déjà inscrit? Connexion</Link>
+        <Link className="text-zinc-50 underline underline-offset-2 text-center" to="/login">Déjà inscrit? Connexion</Link>
       </form>
-    </>
+    </MotionGuestForms>
   )
 }
 
