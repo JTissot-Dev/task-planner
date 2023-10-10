@@ -16,10 +16,10 @@ class AuthController extends Controller
     public function login(LoginRequest $request) 
     {
         $credentials = $request->validated();
-        if (!Auth::atempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             return response([
                 'message' => 'Email ou mot de passe invalide'
-            ]);
+            ], 422);
         }
 
         /** @var User $user */

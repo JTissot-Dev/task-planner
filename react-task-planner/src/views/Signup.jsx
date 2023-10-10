@@ -1,6 +1,5 @@
 import { Label, TextInput, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { ShowPasswordIcon } from "../components/icons";
 import { useState } from "react";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../context/ContextProvider";
@@ -25,6 +24,8 @@ const Signup = () => {
     passwordError: "",
     passwordConfirmationError: ""
   })
+
+  const [signupError, setSignupError] = useState('');
 
   const {setUser, setToken} = useStateContext();
 
@@ -102,20 +103,25 @@ const Signup = () => {
       .catch(error => {
         const response = error.response;
         if (response && response.status === 422) {
-          console.log(response.data.errors);
+          if (response.data.errors.email) {
+            setSignupError("Erreur lors de l'envoi du formulaire");
+          }
         }
       })
-  }
+    }
 
   return (
     <MotionGuestForms>
       <form 
         className="flex w-full py-4 px-8 flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 shadow-md"
         onSubmit={ signupSubmit }
-        >
-        <legend className="text-2xl text-zinc-50 mb-5">
+      >
+        <legend className="text-2xl text-zinc-50">
           Inscription
         </legend>
+        <div className="text-xs h-1 text-red-700 mb-3">
+            { signupError }
+          </div>
         <div className="mb-2">
           <div className="mb-1 block">
             <Label

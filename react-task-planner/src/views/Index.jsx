@@ -2,12 +2,11 @@ import { Button } from "flowbite-react";
 
 const Index = () => {
 
-
-
+  
   return (
     <div>
       <h1>
-        Index
+        Bienvenue à bord !
       </h1>
     </div>
   )
