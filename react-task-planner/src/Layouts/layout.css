@@ -4,3 +4,10 @@
   background-size: cover;
   background-attachment: scroll;
 }
+
+.default-background{
+  background-image: url('/image/DefaultBackground.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll;
+}

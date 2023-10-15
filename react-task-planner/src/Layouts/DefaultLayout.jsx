@@ -68,12 +68,14 @@ const DefaultLayout = () => {
         toggleSideBar = { toggleSideBar }
         sideMenuDisplay={ sideMenuDisplay }
         sideBar={ sideBar }/>
-      <div className="flex">
         { displaySideBar }
-        <main className=" sm:ml-0 container mx-auto px-10 mt-20 mb-10 z-0 ">
-          <Outlet />
+        <main 
+          className={`container pt-24 pb-10 mx-auto min-h-screen z-0 ${sideBar && " sm:ps-64"}` }>
+            <div className="flex justify-center h-auto w-full">
+              <Outlet userName={ user }/>
+            </div>
+            
         </main>
-      </div>
 
       <LogoutModal 
         openModal={ openModal } 

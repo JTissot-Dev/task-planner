@@ -7,8 +7,9 @@ const LogoutModal = ({openModal, setOpenModal, logout}) => {
   return (
     <>
       <Modal
+        dismissible
         className=""
-        show={openModal === 'default'}
+        show={openModal === 'dismissible'}
         onClose={() => setOpenModal(undefined)}>
         <Modal.Header>Déconnexion</Modal.Header>
         <Modal.Body>

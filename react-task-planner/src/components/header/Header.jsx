@@ -39,7 +39,7 @@ const Header = ({ userName, setOpenModal, redirectHome, toggleSideBar, sideMenuD
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center h-14 bg-gray-900 bg-opacity-70 z-50 shadow-md shadow-gray-500">
+      <header className="fixed top-0 w-full flex justify-between items-center h-14 bg-slate-950 bg-opacity-80 z-50 shadow-md shadow-gray-500">
           <div className="hidden sm:block w-fit sm:w-64">
             <div className={ `w-fit items-center ${sideMenuDisplay}` }>
               <MenuItem 
@@ -55,16 +55,20 @@ const Header = ({ userName, setOpenModal, redirectHome, toggleSideBar, sideMenuD
           src={ screenSize.width > 640 ? "/logo/brand-logo.png"  : "/logo/brand-logo-header.png" }>
         </img>
           <div className="flex items-center">
-            <div className="flex items-center justify-center w-8 h-8 me-5 hover:bg-opacity-80 bg-purple-800 bg-opacity-40 rounded-full">
+            <div className="flex items-center justify-center w-8 h-8 me-5 transition hover:ease-in duration-200 hover:bg-opacity-60 bg-purple-700 bg-opacity-40 rounded-full">
               <Link
                 className="text-zinc-50 font-semibold" 
                 to="">
                   { profileName }
               </Link>
             </div>
-            <NavBar
-              setOpenModal={ setOpenModal }
-              redirectHome={ redirectHome } />
+            <div className="">
+              <NavBar
+                setOpenModal={ setOpenModal }
+                redirectHome={ redirectHome } 
+                widthSize={ screenSize.width }/>
+            </div>
+            
           </div>
       </header>
     </>
