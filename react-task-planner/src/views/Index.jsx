@@ -9,7 +9,7 @@ const Index = () => {
   return (
     <div className="flex flex-col w-full px-20  mx-3 py-5">
       <div className="border-b border-gray-300 flex justify-start">
-        <h1 className="font-semibold">
+        <h1 className="font-semibold text-gray-600">
           Bienvenue à bord { user.last_name }
       
         </h1>

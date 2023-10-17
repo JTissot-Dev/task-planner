@@ -27,7 +27,7 @@ const Login = () => {
 
     axiosClient.post("/login", payload)
       .then(({data}) => {
-        setUser(`${data.firstName}_${data.lastName}`);
+        setUser(data);
         setToken(data.token);
       })
       .catch(error => {

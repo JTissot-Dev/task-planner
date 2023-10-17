@@ -5,6 +5,7 @@ import DefaultLayout from "./Layouts/DefaultLayout";
 import GuestLayout from "./Layouts/GuestLayout";
 import Index from "./views/Index";
 import NotFound from "./views/NotFound";
+import UserAccount from "./views/UserAccount";
 
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '/index',
         element: <Index />
+      },
+      {
+        path: '/account',
+        element: <UserAccount />
       }
     ]
   },

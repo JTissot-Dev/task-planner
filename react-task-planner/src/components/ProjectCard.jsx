@@ -15,7 +15,7 @@ const ProjectCard = ({addProject}) => {
       > 
         <div className="flex items-center">
           <AddProjectIcon />
-          <h5 className="ms-3 text-md font-bold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="ms-3 text-md font-bold tracking-tight text-gray-600 dark:text-white">
               Nouveau Projet
           </h5>
         </div>

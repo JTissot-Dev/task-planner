@@ -97,7 +97,7 @@ const Signup = () => {
 
     axiosClient.post("/signup", payload)
       .then(({data}) => {
-        setUser(`${data.firstName}_${data.lastName}`);
+        setUser(data);
         setToken(data.token);
       })
       .catch(error => {

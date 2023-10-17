@@ -1,9 +1,9 @@
+const MenuItem = ({children, index, setOpenModal, toggleSideBar, sideBar, dropDownItem, toggleDropDown, navigate}) => {
 
-const MenuItem = ({children, index, setOpenModal, redirectHome, toggleSideBar, sideBar, dropDownItem, toggleDropDown}) => {
 
   const handleMenu = () => {
     if (index === 0) {
-      redirectHome();
+      navigate('/index');
     } else if (index === 1) {
       setOpenModal('dismissible');
     } else {

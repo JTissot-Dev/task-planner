@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { ReduceSideBarIcon } from "../icons";
 
 
-const Header = ({ userName, setOpenModal, redirectHome, toggleSideBar, sideMenuDisplay, sideBar }) => {
+const Header = ({ userName, setOpenModal, toggleSideBar, sideMenuDisplay, sideBar }) => {
 
   
 
@@ -58,14 +58,13 @@ const Header = ({ userName, setOpenModal, redirectHome, toggleSideBar, sideMenuD
             <div className="flex items-center justify-center w-8 h-8 me-5 transition hover:ease-in duration-200 hover:bg-opacity-60 bg-purple-700 bg-opacity-40 rounded-full">
               <Link
                 className="text-zinc-50 font-semibold" 
-                to="">
+                to="/account">
                   { profileName }
               </Link>
             </div>
             <div className="">
               <NavBar
                 setOpenModal={ setOpenModal }
-                redirectHome={ redirectHome } 
                 widthSize={ screenSize.width }/>
             </div>
             

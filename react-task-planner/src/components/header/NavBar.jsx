@@ -3,11 +3,13 @@ import { LogoutMenuIcon } from "../icons"
 import { HomeMenuIcon } from "../icons"
 import { NavBarDropdownIcon } from "../icons"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-const NavBar = ({setOpenModal, redirectHome, widthSize}) => {
+const NavBar = ({setOpenModal, widthSize}) => {
 
 
   const [dropDown, setDropDown] = useState(false)
+  const navigate = useNavigate();
 
   const toggleDropDown = () => {
     setDropDown(!dropDown);
@@ -20,7 +22,8 @@ const NavBar = ({setOpenModal, redirectHome, widthSize}) => {
         <MenuItem
           index={ index } 
           setOpenModal={ setOpenModal }
-          redirectHome={ redirectHome }>
+          navigate={ navigate }
+        >
           { MenuIcon }
         </MenuItem>
       </li>
@@ -31,19 +34,22 @@ const NavBar = ({setOpenModal, redirectHome, widthSize}) => {
     <ul className={ `bg-gray-800 shadow-gray-500 bg-opacity-50 shad shadow-md flex flex-col w-44 fixed top-16 rounded-b-md rounded-tl-md right-0 ${ dropDown ? "block" : "hidden" }` }
       onMouseLeave={ toggleDropDown }>
       <li className="border-b border-zinc-50">
-        <button className="flex w-full py-2 ps-2 transition duration-200 hover:ease-in hover:bg-cyan-900 hover:bg-opacity-30 rounded-tl-md">
+        <button 
+          className="flex w-full py-2 ps-2 transition duration-200 hover:ease-in hover:bg-cyan-900 hover:bg-opacity-30 rounded-tl-md"
+          onClick={ () => navigate('/index') }
+        >
           <HomeMenuIcon />
           <span className="ml-3 text-zinc-50">Accueil</span>
         </button>
       </li>
       <li className="">
-        <button className="flex w-full py-2 ps-2 transition duration-200 hover:ease-in hover:bg-cyan-900 hover:bg-opacity-30 rounded-b-md"
+        <button 
+          className="flex w-full py-2 ps-2 transition duration-200 hover:ease-in hover:bg-cyan-900 hover:bg-opacity-30 rounded-b-md"
           onClick={() => setOpenModal('dismissible') }>
           <LogoutMenuIcon />
           <span className="ml-3 text-zinc-50">Déconnexion</span>
         </button>
       </li>
-
     </ul>
   )
 
@@ -55,7 +61,7 @@ const NavBar = ({setOpenModal, redirectHome, widthSize}) => {
     ) :
     (
       <>
-        <MenuItem dropDownItem={ true } toggleDropDown={ toggleDropDown }>
+        <MenuItem dropDownItem={ true } toggleDropDown={ toggleDropDown } navigate={ navigate }>
           <NavBarDropdownIcon />
         </MenuItem>
         { dropDownItems } 

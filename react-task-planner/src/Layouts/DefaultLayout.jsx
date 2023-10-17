@@ -35,10 +35,6 @@ const DefaultLayout = () => {
   const [openModal, setOpenModal] = useState();
 
   const [sideMenuDisplay, setSideMenuDisplay] = useState('');
-
-  const redirectHome = () => {
-    return <Navigate to="/index" />
-  }
   
   const toggleSideBar = () => {
     setSideBar(!sideBar);
@@ -64,7 +60,6 @@ const DefaultLayout = () => {
       <Header 
         userName={ userName }
         setOpenModal={ setOpenModal }
-        redirectHome={ redirectHome } 
         toggleSideBar = { toggleSideBar }
         sideMenuDisplay={ sideMenuDisplay }
         sideBar={ sideBar }/>
