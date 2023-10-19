@@ -2,8 +2,8 @@ import { AddProjectIcon } from "./icons";
 
 const SideBar = () => {
   return (
-      <aside id="default-sidebar" className="fixed top:0 left:0 z-40 h-screen hidden sm:flex shadow-2xl" aria-label="Sidebar">
-        <div className="h-full sm:w-64 px-3 py-4 overflow-y-auto bg-cyan-900 bg-opacity-20 dark:bg-gray-800">
+      <aside id="default-sidebar" className="fixed top:0 left:0 z-40 h-screen hidden sm:flex" aria-label="Sidebar">
+        <div className="h-full sm:w-64 px-3 py-4 overflow-y-auto bg-slate-500 bg-opacity-20 shadow-slate-300 shadow-xl">
           <div className="mt-20 pb-2 border-b border-gray-500">
             <h3 className="font-bold">
               Mes projets

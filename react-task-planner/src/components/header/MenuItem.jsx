@@ -23,7 +23,7 @@ const MenuItem = ({children, index, setOpenModal, toggleSideBar, sideBar, dropDo
       <button
         onClick={ handleMenu }
         onMouseEnter={ dropDownItem && toggleDropDown }
-        className={`${!sideBar ? "h-14 px-5": "transition duration-200 ease-out hover:ease-in flex items-center justify-center ms-5 bg-gray-500 bg-opacity-40 hover:bg-opacity-70  z-50 p-2 rounded-full"} `}
+        className={`${!sideBar ? "h-14 px-5": "transition duration-200 ease-out hover:ease-in flex items-center justify-center ms-5 bg-slate-500 bg-opacity-20 hover:bg-opacity-70  z-50 p-2 rounded-full"} `}
       >
         { children }
       </button>
