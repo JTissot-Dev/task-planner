@@ -1,43 +1,36 @@
 import { Card } from "flowbite-react";
 import { AddProjectIcon } from "./icons";
 
-const ProjectCard = ({addProject}) => {
+const ProjectCard = ({addProject, projectId, projectName}) => {
 
-  let projectName = 'Project Name gedfefzefzedza';
-  projectName = projectName.length > 17 ? `${projectName.substring(0,17)}...` : projectName
-  const projectCard = addProject ?
+  if (projectName) {
+    projectName = projectName.length > 17 ? `${projectName.substring(0,17)}...` : projectName
+  }
+  
+  const cardTitle = addProject ? 
     (
-      <button>
-      <Card
-        imgAlt="Meaningful alt text for an image that is not purely decorative"
-        imgSrc="/image/ProjectIllustration.jpg"
-        className="w-full sm:w-52 md:w-64 xl:w-80 opacity-90 hover:opacity-100"
-      > 
-        <div className="flex items-center">
-          <AddProjectIcon />
-          <h5 className="ms-3 text-md font-bold tracking-tight text-gray-600 dark:text-white">
-              Nouveau Projet
-          </h5>
-        </div>
-      </Card>
-      </button>
+    <div className="flex items-center justify-center">
+      <AddProjectIcon style="text-gray-600 w-3 h-3 -ml-5 mr-3"/>
+      <h5 class="text-md font-bold tracking-tight text-gray-600 dark:text-white">
+        Nouveau projet
+      </h5>
+    </div>
     ) :
     (
-      <button>
-        <Card
-        imgAlt="Meaningful alt text for an image that is not purely decorative"
-        imgSrc="/image/ProjectIllustration.jpg"
-        className="w-full sm:w-52 md:w-64 xl:w-80 opacity-90 hover:opacity-100"
-      >
-        <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-            { projectName }
-        </h5>
-        </Card>
-      </button>
+    <h5 class="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+      {  projectName }
+    </h5>
     )
   
   return (
-     projectCard 
+    <button className=" w-full">
+      <div class="bg-white border border-gray-200 rounded-lg opacity-75 hover:opacity-90">
+              <img class="rounded-t-lg h-44 sm:h-36 w-full" src="/image/ProjectIllustration.jpg" alt="image projet" />
+          <div class="p-5">
+              { cardTitle }
+          </div>
+      </div>
+    </button>
   )
 }
 

@@ -10,12 +10,15 @@ import SideBar from "../components/SideBar";
 
 const DefaultLayout = () => {
 
-  const {user, token, setUser, setToken} = useStateContext();
-
+  const {user, token, sideBar, setUser, setToken, setSideBar} = useStateContext();
+  const [pagination, setPagination] = useState([]);
+  const [currentPage, setCurrentPage] = useState(null);
 
   if (!token) {
     return <Navigate to="/login" />;
   }
+
+  console.log(token);
 
   useEffect(() => {
     axiosClient.get('/user')
@@ -29,9 +32,6 @@ const DefaultLayout = () => {
     lastName: user.last_name
   };
 
-  
-
-  const [sideBar, setSideBar] = useState(false);
   const [openModal, setOpenModal] = useState();
 
   const [sideMenuDisplay, setSideMenuDisplay] = useState('');
@@ -67,7 +67,7 @@ const DefaultLayout = () => {
         <main 
           className={`container pt-24 pb-10 mx-auto min-h-screen z-0 ${sideBar && " sm:ps-64"}` }>
             <div className="flex justify-center h-auto w-full">
-              <Outlet userName={ user }/>
+              <Outlet/>
             </div>
             
         </main>
