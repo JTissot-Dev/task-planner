@@ -1,4 +1,3 @@
-import { Card } from "flowbite-react";
 import { AddProjectIcon } from "./icons";
 
 const ProjectCard = ({addProject, projectId, projectName}) => {
@@ -10,23 +9,26 @@ const ProjectCard = ({addProject, projectId, projectName}) => {
   const cardTitle = addProject ? 
     (
     <div className="flex items-center justify-center">
-      <AddProjectIcon style="text-gray-600 w-3 h-3 -ml-5 mr-3"/>
-      <h5 class="text-md font-bold tracking-tight text-gray-600 dark:text-white">
+      <AddProjectIcon style="text-zinc-50 text-opacity-70 text-gray-600 w-3 h-3 -ml-5 mr-3"/>
+      <h5 className="text-md font-bold tracking-tight text-zinc-50 text-opacity-70">
         Nouveau projet
       </h5>
     </div>
     ) :
     (
-    <h5 class="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+    <h5 className="text-md font-bold tracking-tight text-zinc-50 text-opacity-90">
       {  projectName }
     </h5>
     )
   
   return (
-    <button className=" w-full">
-      <div class="bg-white border border-gray-200 rounded-lg opacity-75 hover:opacity-90">
-              <img class="rounded-t-lg h-44 sm:h-36 w-full" src="/image/ProjectIllustration.jpg" alt="image projet" />
-          <div class="p-5">
+    <button className="w-full">
+      <div className="bg-slate-950 border border-zinc-50 rounded-lg opacity-75 hover:opacity-90">
+              <img 
+                className="rounded-t-lg h-44 sm:h-36 w-full border-b border-zinc-50 border-opacity-50" 
+                src="/image/ProjectIllustration.jpg" 
+                alt="image projet" />
+          <div className="p-5">
               { cardTitle }
           </div>
       </div>

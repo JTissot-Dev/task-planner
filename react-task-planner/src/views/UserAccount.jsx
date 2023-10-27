@@ -68,8 +68,8 @@ const UserAccount = () => {
 
   return (
     <div className="w-full mx-3 lg:mx-52">
-      <div className="mb-2 mt-5 border-b border-gray-300">
-        <h1 className="font-semibold text-gray-600">Mon compte</h1>
+      <div className="mb-2 mt-28 border-b border-gray-300">
+        <h1 className="font-semibold text-zinc-50 text-opacity-90">Mon compte</h1>
       </div>
       <div className="h-9 mb-10">
         { updateNotification }
@@ -83,7 +83,7 @@ const UserAccount = () => {
               type="email" 
               name="floating_email" 
               id="floating_email" 
-              className={ `block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent appearance-none focus:outline-none focus:ring-0 ${ emailLabel.includes('invalide') ? 'focus:border-red-500 border-0 border-b border-red-500' : 'focus:border-purple-600 border-0 border-b border-gray-300'}  peer` } 
+              className={ `block py-2.5 px-0 w-full text-sm text-zinc-50 text-opacity-50 bg-transparent appearance-none focus:outline-none focus:ring-0 ${ emailLabel.includes('invalide') ? 'focus:border-red-500 border-0 border-b border-red-500' : 'focus:border-purple-600 border-0 border-b border-gray-300'}  peer` } 
               placeholder=" " 
               required 
               value={ user.email }
@@ -91,7 +91,7 @@ const UserAccount = () => {
             />
             <label 
               htmlFor="floating_email" 
-              className={ `peer-focus:font-medium absolute text-sm ${ emailLabel.includes('invalide') ? 'text-red-500 peer-focus:text-red-500' : 'text-gray-600 peer-focus:text-purple-600'} duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6` }
+              className={ `peer-focus:font-medium absolute text-sm text-zinc-50 text-opacity-90 ${ emailLabel.includes('invalide') ? 'text-red-500 peer-focus:text-red-500' : 'text-gray-600 peer-focus:text-purple-600'} duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6` }
             >
               { emailLabel }
             </label>
@@ -102,7 +102,7 @@ const UserAccount = () => {
                 type="text" 
                 name="floating_first_name" 
                 id="floating_first_name" 
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-purple-600 peer" 
+                className="block py-2.5 px-0 w-full text-sm text-zinc-50 text-opacity-50 bg-transparent border-0 border-b border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-purple-600 peer" 
                 placeholder=" " 
                 required
                 value={ user.first_name }
@@ -110,7 +110,7 @@ const UserAccount = () => {
               />
               <label 
                 htmlFor="floating_first_name" 
-                className="peer-focus:font-medium absolute text-sm text-gray-600  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-purple-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                className="peer-focus:font-medium absolute text-zinc-50 text-opacity-90 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-purple-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 Nom
               </label>
@@ -120,7 +120,7 @@ const UserAccount = () => {
                 type="text" 
                 name="floating_last_name" 
                 id="floating_last_name" 
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b border-gray-300 appearance-none   focus:outline-none focus:ring-0 focus:border-purple-600 peer" 
+                className="block py-2.5 px-0 w-full text-sm text-zinc-50 text-opacity-50 bg-transparent border-0 border-b border-gray-300 appearance-none   focus:outline-none focus:ring-0 focus:border-purple-600 peer" 
                 placeholder=" " 
                 required
                 value={ user.last_name }
@@ -128,7 +128,7 @@ const UserAccount = () => {
               />
               <label 
                 htmlFor="floating_last_name" 
-                className="peer-focus:font-medium absolute text-sm text-gray-600  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-purple-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                className="peer-focus:font-medium absolute text-sm text-zinc-50 text-opacity-90  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-purple-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 Prénom
               </label>

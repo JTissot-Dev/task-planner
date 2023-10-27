@@ -39,7 +39,7 @@ const Header = ({ userName, setOpenModal, toggleSideBar, sideMenuDisplay, sideBa
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center h-14 bg-slate-950 bg-opacity-80 z-50 shadow-md shadow-gray-500">
+      <header className="fixed top-0 w-full flex justify-between items-center h-14 bg-slate-950 bg-opacity-80 z-50 border-b border-zinc-50 border-opacity-50">
           <div className="hidden sm:block w-fit sm:w-64">
             <div className={ `w-fit items-center ${sideMenuDisplay}` }>
               <MenuItem 

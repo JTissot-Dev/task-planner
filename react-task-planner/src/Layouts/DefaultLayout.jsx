@@ -11,8 +11,6 @@ import SideBar from "../components/SideBar";
 const DefaultLayout = () => {
 
   const {user, token, sideBar, setUser, setToken, setSideBar} = useStateContext();
-  const [pagination, setPagination] = useState([]);
-  const [currentPage, setCurrentPage] = useState(null);
 
   if (!token) {
     return <Navigate to="/login" />;
@@ -56,7 +54,7 @@ const DefaultLayout = () => {
   
   
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-slate-950">
       <Header 
         userName={ userName }
         setOpenModal={ setOpenModal }
@@ -65,11 +63,8 @@ const DefaultLayout = () => {
         sideBar={ sideBar }/>
         { displaySideBar }
         <main 
-          className={`container pt-24 pb-10 mx-auto min-h-screen z-0 ${sideBar && " sm:ps-64"}` }>
-            <div className="flex justify-center h-auto w-full">
-              <Outlet/>
-            </div>
-            
+          className={`container flex justify-center w-full pb-10 mx-auto min-h-screen z-0 ${sideBar && " sm:ps-64"}` }>
+            <Outlet/>
         </main>
 
       <LogoutModal 
