@@ -23,7 +23,7 @@ const ProjectCard = ({addProject, projectId, projectName}) => {
   
   return (
     <button className="w-full">
-      <div className="bg-slate-950 border border-zinc-50 rounded-lg opacity-75 hover:opacity-90">
+      <div className="bg-slate-950 border border-zinc-50 border-opacity-50 transition duration-200 hover:ease-in-out rounded-lg opacity-75 hover:opacity-90">
               <img 
                 className="rounded-t-lg h-44 sm:h-36 w-full border-b border-zinc-50 border-opacity-50" 
                 src="/image/ProjectIllustration.jpg" 

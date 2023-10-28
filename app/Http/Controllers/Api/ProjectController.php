@@ -7,17 +7,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {   
-        return ProjectResource::collection(
-            Project::orderBy('id', 'desc')->paginate(7)
-        );
+        if ($request->input('name')) {
+            $projectName = $request->input('name');
+
+            return ProjectResource::collection(
+                Project::where('name', 'like', "%$projectName%")->orderBy('id', 'desc')->paginate(7)
+            );
+        } else {
+            return ProjectResource::collection(
+                Project::orderBy('id', 'desc')->paginate(7)
+            );
+        } 
     }
 
     /**

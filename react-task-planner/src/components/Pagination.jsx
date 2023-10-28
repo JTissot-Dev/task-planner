@@ -46,7 +46,6 @@ const Pagination = ({ pagination, updateProjects, loading }) => {
         last: lastPage
       })
       updateProjects(lastPage);
-      console.log(pagination);
     }
   }
 

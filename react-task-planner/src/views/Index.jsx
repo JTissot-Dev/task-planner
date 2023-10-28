@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Pagination from "../components/pagination";
 import LargeSpinner from "../components/Spinners/LargeSpinner";
+import SearchBarProjects from "../components/SearchBarProjects";
 
 const Index = () => {
 
@@ -22,6 +23,7 @@ const Index = () => {
 
   const [pagination, setPagination] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
+  const [projectName, setProjectName] = useState('');
 
   useEffect(() => {
     getProjets();
@@ -45,13 +47,23 @@ const Index = () => {
 
   const spinner = loading && <LargeSpinner />;
 
-  const updateProjects = (currentPage) => {
-    setCurrentPage(currentPage);
-    setProjectsUrl(`/project?page=${currentPage}`);
+  const updateProjects = (currentFolio) => {
+
+    if (currentFolio) {
+      setCurrentPage(currentFolio);
+      if (projectName) {
+        setProjectsUrl(`/project?name=${projectName}&page=${currentFolio}`);
+      } else {
+        setProjectsUrl(`/project?page=${currentFolio}`);
+      }
+    } else {
+      setProjectsUrl(`/project?name=${projectName}`);
+    }
   }
 
-  // const paginationIndex = !loading && 
-  //   <Pagination pagination={ pagination } updateProjects={ updateProjects }/>;
+  console.log(projectsUrl);
+  console.log(projects);
+  console.log(pagination);
   
 
   return (
@@ -63,10 +75,13 @@ const Index = () => {
           </h1>
         </div>
         <div className="flex flex-col justify-between relative mt-5 rounded-md w-full">
-        <div className="absolute top-1/2 start-1/2">
+        <div className="absolute z-50 top-28 start-1/2">
           { spinner }
         </div>
-        <h2 className="mb-5 text-zinc-50 text-opacity-90">Vos projets</h2>
+        <div className="mb-5 block md:flex md:items-center md:justify-between">
+          <h2 className=" text-zinc-50 text-opacity-90">Vos projets</h2>
+          <SearchBarProjects updateProjects={ updateProjects } setProjectName={ setProjectName }/>
+        </div>
         <div 
           className={`grid ${ sideBar ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"}`}>
           <ProjectCard addProject={ true }/>
