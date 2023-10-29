@@ -5,7 +5,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import axiosClient from "../axios-client";
 import DefaultSpinner from "./Spinners/DefaultSpinner";
 import { AngleDownIcon } from "./icons";
-import { Pagination } from "flowbite-react";
+import { useStateContext } from "../context/ContextProvider";
+
 
 const SideBar = () => {
 
@@ -14,13 +15,15 @@ const SideBar = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
 
+  const {user} = useStateContext();
+
   useEffect(() => {
     getProjets();
   }, [])
 
   const getProjets = () => {
     setLoading(true);
-    axiosClient.get('/project')
+    axiosClient.get(`/project?user-id=${user.id}`)
       .then(({data}) => {
         setProjects(data.data);
         setLoading(false);
@@ -33,7 +36,7 @@ const SideBar = () => {
   const getMoreProjects = () => {
     setLoading(true);
     setTimeout(() => {
-      axiosClient.get(`/project?page=${currentPage}`)
+      axiosClient.get(`/project?user-id=${user.id}&page=${currentPage}`)
       .then(({data}) => {
         setProjects((prevData) => [...prevData, ...data.data]);
         setCurrentPage((prevPage) => prevPage + 1); 
@@ -43,8 +46,7 @@ const SideBar = () => {
       .catch(() => {
         setLoading(false);
       })
-    }, 1500)
-    
+    }, 1000)
   }
 
 
@@ -76,7 +78,7 @@ const SideBar = () => {
           className="sm:w-64 h-screen px-3 py-4 overflow-y-auto scrollbar-thin scrollbar-track-zinc-200 scrollbar-thumb-zinc-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full bg-opacity-0 border-r border-zinc-50 border-opacity-50"
           id="scrollableDiv"
           >
-          <div className="mt-8 pb-2 border-b border-opacity-50 text-zinc-50 text-opacity-90 border-zinc-50 bg-local hover:bg-fixed">
+          <div className="mt-4 pb-2 border-b border-opacity-50 text-zinc-50 text-opacity-90 border-zinc-50 bg-local hover:bg-fixed">
             <h3 className="font-bold">
               Mes projets
             </h3>
@@ -86,7 +88,7 @@ const SideBar = () => {
             <span className="ml-3 text-zinc-50 text-opacity-90">Nouveau projet</span>
           </button>
           <div
-            className="mb-14 space-y-2 font-medium text-gray-900"
+            className="mb-14 mt-2 space-y-2 font-medium text-gray-900"
           >
             <InfiniteScroll
                 dataLength={projects.length}

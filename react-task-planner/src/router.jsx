@@ -6,6 +6,7 @@ import GuestLayout from "./Layouts/GuestLayout";
 import Index from "./views/Index";
 import NotFound from "./views/NotFound";
 import UserAccount from "./views/UserAccount";
+import Project from "./views/Project";
 
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: '/account',
         element: <UserAccount />
+      },
+      {
+        path: '/project/:projectId',
+        element: <Project />
       }
     ]
   },

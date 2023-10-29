@@ -19,9 +19,7 @@ export const ContextProvider = ({children}) => {
   const [user, setUser] = useState({});
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [sideBar, setSideBar] = useState(false);
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [projectsUrl, setProjectsUrl] = useState('/project');
+  
 
   const setToken = (token) => {
     _setToken(token);
@@ -37,15 +35,9 @@ export const ContextProvider = ({children}) => {
       user,
       token,
       sideBar,
-      projects,
-      loading,
-      projectsUrl,
       setUser,
       setToken,
-      setSideBar,
-      setProjects,
-      setLoading,
-      setProjectsUrl
+      setSideBar
     }}>
       { children }
     </stateContext.Provider>

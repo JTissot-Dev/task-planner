@@ -12,21 +12,26 @@ const Index = () => {
   const 
   {
     user, 
-    sideBar, 
-    projects, 
-    loading, 
-    projectsUrl,
-    setLoading,
-    setProjects,
-    setProjectsUrl
+    sideBar,
   } = useStateContext();
 
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [projectsUrl, setProjectsUrl] = useState('');
   const [pagination, setPagination] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
   const [projectName, setProjectName] = useState('');
 
+
   useEffect(() => {
-    getProjets();
+    setLoading(true);
+    setProjectsUrl(`/project?user-id=${user.id}`);
+  }, [user.id])
+
+  useEffect(() => {
+    if (user.id) {
+      getProjets();
+    }
   }, [projectsUrl])
 
   const getProjets = () => {
@@ -40,9 +45,8 @@ const Index = () => {
       })
       .catch(() => {
         setLoading(false);
-      }), 1500
+      }), 1000
     })
-    
   }
 
   const spinner = loading && <LargeSpinner />;
@@ -52,24 +56,20 @@ const Index = () => {
     if (currentFolio) {
       setCurrentPage(currentFolio);
       if (projectName) {
-        setProjectsUrl(`/project?name=${projectName}&page=${currentFolio}`);
+        setProjectsUrl(`/project?user-id=${user.id}&name=${projectName}&page=${currentFolio}`);
       } else {
-        setProjectsUrl(`/project?page=${currentFolio}`);
+        setProjectsUrl(`/project?user-id=${user.id}&page=${currentFolio}`);
       }
     } else {
-      setProjectsUrl(`/project?name=${projectName}`);
+      setProjectsUrl(`/project?user-id=${user.id}&name=${projectName}`);
     }
   }
-
-  console.log(projectsUrl);
-  console.log(projects);
-  console.log(pagination);
   
 
   return (
     <div className={`relative flex flex-col justify-between min-h-full w-full mx-3 ${ sideBar ? "px-5" : "px-5 sm:px-20" }`} >
       <div>
-        <div className="border-b mt-28 border-zinc-50 border-opacity-50 flex justify-start">
+        <div className="border-b mt-24 border-zinc-50 border-opacity-50 flex justify-start">
           <h1 className="font-semibold text-zinc-50 text-opacity-90">
             Bienvenue à bord { user.last_name }
           </h1>

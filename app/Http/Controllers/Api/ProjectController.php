@@ -16,15 +16,17 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {   
+        $userId = $request->input('user-id');
+
         if ($request->input('name')) {
             $projectName = $request->input('name');
 
             return ProjectResource::collection(
-                Project::where('name', 'like', "%$projectName%")->orderBy('id', 'desc')->paginate(7)
+                Project::where('user_id', $userId)->where('name', 'like', "%$projectName%")->orderBy('id', 'desc')->paginate(7)
             );
         } else {
             return ProjectResource::collection(
-                Project::orderBy('id', 'desc')->paginate(7)
+                Project::where('user_id', $userId)->orderBy('id', 'desc')->paginate(7)
             );
         } 
     }
@@ -42,7 +44,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return new ProjectResource($project);
     }
 
     /**

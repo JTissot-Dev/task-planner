@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\ListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResources([
         'user-account' => UserController::class,
-        'project' => ProjectController::class
+        'project' => ProjectController::class,
+        'list' => ListController::class
     ]);
 });
 

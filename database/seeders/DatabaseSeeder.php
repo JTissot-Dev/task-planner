@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
 
         for ($i =1; $i < 20-1; $i++) {
             $projectId = DB::table('projects')->insertGetId([
-                'name' => Str::random(10)
+                'name' => Str::random(10),
+                'user_id' => 6
             ]);
         
             for ($y=1; $y < 5-1; $y++) {
