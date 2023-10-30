@@ -57,7 +57,6 @@ const UserAccount = () => {
 
   axiosClient.put(`/user-account/${user.id}`, payload)
     .then(() => {
-      console.log('toto');
       setUpdateNotification(<SuccessAlert dismissAlert={ dismissAlert } />);
     })
     .catch(()=> {

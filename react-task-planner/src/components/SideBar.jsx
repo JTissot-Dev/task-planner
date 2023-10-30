@@ -6,6 +6,7 @@ import axiosClient from "../axios-client";
 import DefaultSpinner from "./Spinners/DefaultSpinner";
 import { AngleDownIcon } from "./icons";
 import { useStateContext } from "../context/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 
 const SideBar = () => {
@@ -15,7 +16,8 @@ const SideBar = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
 
-  const {user} = useStateContext();
+  const {user, setCurrentProject} = useStateContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProjets();
@@ -49,11 +51,16 @@ const SideBar = () => {
     }, 1000)
   }
 
+  const handleProject = (projectId, projectName) => {
+      setCurrentProject(projectName);
+      navigate(`/project/${projectId}`);
+    }
 
   const projectItems = projects.map((projectItem, index) => {
     return (
       <div key={ index } className="my-2">
         <button
+          onClick={() => handleProject(projectItem.id, projectItem.name)}
           className="flex z-10 bg-slate-800 bg-opacity-50 items-center w-full p-2 transition duration-200 ease-out hover:ease-in text-gray-900 rounded-lg hover:bg-opacity-80  group"
         >
          <span className="ml-7 text-zinc-50 text-opacity-90">{ projectItem.name }</span>

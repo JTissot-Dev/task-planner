@@ -80,7 +80,11 @@ const Index = () => {
         </div>
         <div className="mb-5 block md:flex md:items-center md:justify-between">
           <h2 className=" text-zinc-50 text-opacity-90">Vos projets</h2>
-          <SearchBarProjects updateProjects={ updateProjects } setProjectName={ setProjectName }/>
+          <SearchBarProjects 
+            updateProjects={ updateProjects }
+            projectName={ projectName } 
+            setProjectName={ setProjectName }
+          />
         </div>
         <div 
           className={`grid ${ sideBar ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"}`}>

@@ -1,4 +1,4 @@
-const SearchBarProjects = ({setProjectName, updateProjects}) => {
+const SearchBarProjects = ({projectName, setProjectName, updateProjects}) => {
 
   const handleSearchProjectsSubmit = e => {
     e.preventDefault();
@@ -17,8 +17,9 @@ const SearchBarProjects = ({setProjectName, updateProjects}) => {
             <input 
               type="search" 
               id="default-search" 
-              className="block w-full md:w-72 lg:w-80 xl:w-96 h-9 p-4 pl-2 text-sm border border-zinc-50 border-opacity-50 text-gray-900 borde rounded-md bg-gray-50 focus:ring-purple-600 focus:border-purple-600" 
+              className="block w-full md:w-72 lg:w-80 xl:w-96 h-9 p-4 pl-2 text-sm border-zinc-50 border-opacity-50 text-gray-900 border rounded-md bg-gray-50 focus:ring-purple-600 focus:border-purple-600" 
               placeholder="Projet"
+              value={ projectName }
               onChange={ handleProjectName }
             ></input>
             <button 

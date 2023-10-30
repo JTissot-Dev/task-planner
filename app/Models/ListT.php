@@ -13,10 +13,14 @@ class ListT extends Model
 {
     use HasFactory;
 
+    protected $table = 'lists';
+
     /**
      * @var string
      */
-    protected $fillable = 'title';
+    protected $fillable = [
+        'title'
+    ];
 
 
     public function project(): BelongsTo

@@ -4,21 +4,18 @@ const stateContext = createContext({
   currentUser: null,
   token: null,
   sideBar: false,
-  projects: [],
-  loading: false,
-  projectsUrl: '/project',
+  currentProject: '',
   setUser: () => {},
   setToken: () => {},
   setSideBar: () => {},
-  setProjects: () => {},
-  setLoading: () => {},
-  setProjectsUrl: () => {}
+  setCurrentProject: () => {}
 })
 
 export const ContextProvider = ({children}) => {
   const [user, setUser] = useState({});
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [sideBar, setSideBar] = useState(false);
+  const [currentProject, setCurrentProject] = useState('');
   
 
   const setToken = (token) => {
@@ -35,9 +32,11 @@ export const ContextProvider = ({children}) => {
       user,
       token,
       sideBar,
+      currentProject,
       setUser,
       setToken,
-      setSideBar
+      setSideBar,
+      setCurrentProject,
     }}>
       { children }
     </stateContext.Provider>

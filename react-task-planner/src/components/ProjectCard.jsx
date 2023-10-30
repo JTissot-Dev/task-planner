@@ -1,17 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { AddProjectIcon } from "./icons";
+import { useStateContext } from "../context/ContextProvider";
 
 const ProjectCard = ({addProject, projectId, projectName}) => {
 
+  let projectNameCard = '';
+  
   if (projectName) {
-    projectName = projectName.length > 17 ? `${projectName.substring(0,17)}...` : projectName
+    projectNameCard = projectName.length > 17 ? `${projectName.substring(0,17)}...` : projectName
   }
+
+  const {setCurrentProject} = useStateContext();
 
   const navigate = useNavigate();
 
   const handleProject = projectId => {
     if (projectId) {
-      navigate(`/project/${projectId}`)
+      setCurrentProject(projectName);
+      navigate(`/project/${projectId}`);
     }
   }
   
@@ -26,7 +32,7 @@ const ProjectCard = ({addProject, projectId, projectName}) => {
     ) :
     (
     <h5 className="text-md font-bold tracking-tight text-zinc-50 text-opacity-90">
-      {  projectName }
+      {  projectNameCard }
     </h5>
     )
   
