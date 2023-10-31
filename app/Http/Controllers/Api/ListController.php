@@ -1,19 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\ListT;
 use App\Http\Requests\StoreListTRequest;
 use App\Http\Requests\UpdateListTRequest;
+use Illuminate\Http\Request;
+use App\Http\Resources\ListResource;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\QueryException;
+use App\Models\Task;
+use App\Http\Resources\TaskResource;
 
 class ListController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            $projectId = $request->input('project-id');
+            $lists = ListT::where('project_id', $projectId)
+                            ->orderBy('position', 'asc')
+                            ->get();
+            return ListResource::collection($lists);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => "Une erreur s'est produite lors de la récupération des listes"
+            ], 500);
+        }
     }
 
     /**
@@ -29,7 +45,16 @@ class ListController extends Controller
      */
     public function show(ListT $listT)
     {
-        //
+        try {
+            $tasks = $listT->tasks()
+                            ->orderBy('position', 'asc')
+                            ->get();
+            return TaskResource::collection($tasks);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => "Une erreur s'est produite lors de la récupération des tâches"
+            ], 500);
+        }
     }
 
     /**

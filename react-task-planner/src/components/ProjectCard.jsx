@@ -10,13 +10,10 @@ const ProjectCard = ({addProject, projectId, projectName}) => {
     projectNameCard = projectName.length > 17 ? `${projectName.substring(0,17)}...` : projectName
   }
 
-  const {setCurrentProject} = useStateContext();
-
   const navigate = useNavigate();
 
   const handleProject = projectId => {
     if (projectId) {
-      setCurrentProject(projectName);
       navigate(`/project/${projectId}`);
     }
   }
@@ -40,6 +37,7 @@ const ProjectCard = ({addProject, projectId, projectName}) => {
     <button 
       className="w-full"
       onClick={() => handleProject(projectId) }
+      title={ projectName }
     >
       <div className="bg-slate-950 border border-zinc-50 border-opacity-50 transition duration-200 hover:ease-in-out rounded-lg opacity-75 hover:opacity-90">
               <img 

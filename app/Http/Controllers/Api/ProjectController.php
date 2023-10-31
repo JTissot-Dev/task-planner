@@ -8,7 +8,8 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use Illuminate\Http\Request;
-use App\Http\Resources\ListResource;
+use Illuminate\Database\QueryException;
+
 
 class ProjectController extends Controller
 {
@@ -17,19 +18,26 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {   
-        $userId = $request->input('user-id');
-
-        if ($request->input('name')) {
-            $projectName = $request->input('name');
-
-            return ProjectResource::collection(
-                Project::where('user_id', $userId)->where('name', 'like', "%$projectName%")->orderBy('id', 'desc')->paginate(7)
-            );
-        } else {
-            return ProjectResource::collection(
-                Project::where('user_id', $userId)->orderBy('id', 'desc')->paginate(7)
-            );
-        } 
+        try {
+            $userId = $request->input('user-id');
+            if ($request->input('name')) {
+                $projectName = $request->input('name');
+                $project = Project::where('user_id', $userId)
+                                    ->where('name', 'like', "%$projectName%")
+                                    ->orderBy('id', 'desc')
+                                    ->paginate(7);
+                return ProjectResource::collection($project);
+            } else {
+                $project = Project::where('user_id', $userId)
+                                    ->orderBy('id', 'desc')
+                                    ->paginate(7);
+                return ProjectResource::collection($project);
+            } 
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la récupération des projets'
+            ], 500);
+        }
     }
 
     /**
@@ -45,9 +53,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {   
-        return ListResource::collection(
-            $project->lists
-        );
+        return new ProjectResource($project);
     }
 
     /**

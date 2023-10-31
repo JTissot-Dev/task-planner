@@ -16,7 +16,7 @@ const SideBar = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
 
-  const {user, setCurrentProject} = useStateContext();
+  const {user} = useStateContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,8 +51,7 @@ const SideBar = () => {
     }, 1000)
   }
 
-  const handleProject = (projectId, projectName) => {
-      setCurrentProject(projectName);
+  const handleProject = (projectId) => {
       navigate(`/project/${projectId}`);
     }
 
@@ -60,7 +59,7 @@ const SideBar = () => {
     return (
       <div key={ index } className="my-2">
         <button
-          onClick={() => handleProject(projectItem.id, projectItem.name)}
+          onClick={() => handleProject(projectItem.id)}
           className="flex z-10 bg-slate-800 bg-opacity-50 items-center w-full p-2 transition duration-200 ease-out hover:ease-in text-gray-900 rounded-lg hover:bg-opacity-80  group"
         >
          <span className="ml-7 text-zinc-50 text-opacity-90">{ projectItem.name }</span>

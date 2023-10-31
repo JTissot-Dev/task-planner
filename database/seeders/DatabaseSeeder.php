@@ -22,12 +22,13 @@ class DatabaseSeeder extends Seeder
         for ($i =1; $i < 20-1; $i++) {
             $projectId = DB::table('projects')->insertGetId([
                 'name' => Str::random(10),
-                'user_id' => 6
+                'user_id' => 1
             ]);
         
-            for ($y=1; $y < 5-1; $y++) {
+            for ($y=1; $y < 8-1; $y++) {
                 $listId = DB::table('lists')->insertGetId([
                     'title' => Str::random(10),
+                    'position' => $y,
                     'project_id' => $projectId
                 ]);
 
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
                         'title' => Str::random(10),
                         'description' => Str::random(30),
                         'deadline' => $seedDate,
+                        'position' => $z,
                         'list_id' => $listId    
                     ]);
                 }
