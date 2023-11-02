@@ -6,11 +6,21 @@ import Header from "../components/header/Header";
 import LogoutModal from "../components/modals/LogoutModal";
 import { useState } from "react";
 import SideBar from "../components/SideBar";
+import ConnectionAlert from "../components/alerts/ConnectionAlert";
 
 
 const DefaultLayout = () => {
 
-  const {user, token, sideBar, setUser, setToken, setSideBar} = useStateContext();
+  const {
+    user, 
+    token, 
+    sideBar,
+    connectionError, 
+    setUser, 
+    setToken, 
+    setSideBar,
+    setConnectionError
+  } = useStateContext();
 
   if (!token) {
     return <Navigate to="/login" />;
@@ -52,9 +62,11 @@ const DefaultLayout = () => {
       })
   }
   
+  const connectionAlert = connectionError && <ConnectionAlert />;
   
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="relative min-h-screen">
+      { connectionAlert }
       <Header 
         userName={ userName }
         setOpenModal={ setOpenModal }
@@ -63,7 +75,7 @@ const DefaultLayout = () => {
         sideBar={ sideBar }/>
         { displaySideBar }
         <main 
-          className={`container flex justify-center w-full pb-10 mx-auto min-h-screen z-0 ${sideBar && " sm:ps-64"}` }>
+          className={`container flex justify-center pb-10 w-full mx-auto h-screen z-0 ${sideBar && " sm:ps-64"}` }>
             <Outlet/>
         </main>
 

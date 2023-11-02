@@ -19,7 +19,8 @@ class ListT extends Model
      * @var string
      */
     protected $fillable = [
-        'title'
+        'title',
+        'position'
     ];
 
 
@@ -30,6 +31,6 @@ class ListT extends Model
 
     public function tasks(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'list_id', 'id');
     }
 }

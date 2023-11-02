@@ -18,7 +18,7 @@ const MenuItem = ({children, index, setOpenModal, toggleSideBar, sideBar, dropDo
   return (
     <div 
       className={ !sideBar ? 
-        "transition duration-200 ease-out hover:ease-in border-b border-b-transparent hover:border-cyan-400 hover:border-opacity-90 h-14" :
+        "transition duration-200 ease-out hover:ease-in border-b border-b-transparent hover:border-purple-600 h-14" :
          "flex items-center"}>
       <button
         onClick={ handleMenu }

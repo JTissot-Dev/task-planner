@@ -43,16 +43,17 @@ class ListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ListT $listT)
+    public function show(ListT $list)
     {
         try {
-            $tasks = $listT->tasks()
+            $tasks = $list->tasks()
                             ->orderBy('position', 'asc')
                             ->get();
             return TaskResource::collection($tasks);
+            // return new ListResource($list);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => "Une erreur s'est produite lors de la récupération des tâches"
+                'message' => $e
             ], 500);
         }
     }

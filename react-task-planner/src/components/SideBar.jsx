@@ -37,7 +37,6 @@ const SideBar = () => {
 
   const getMoreProjects = () => {
     setLoading(true);
-    setTimeout(() => {
       axiosClient.get(`/project?user-id=${user.id}&page=${currentPage}`)
       .then(({data}) => {
         setProjects((prevData) => [...prevData, ...data.data]);
@@ -48,8 +47,8 @@ const SideBar = () => {
       .catch(() => {
         setLoading(false);
       })
-    }, 1000)
   }
+
 
   const handleProject = (projectId) => {
       navigate(`/project/${projectId}`);

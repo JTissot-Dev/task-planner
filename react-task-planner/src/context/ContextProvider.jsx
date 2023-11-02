@@ -5,10 +5,12 @@ const stateContext = createContext({
   token: null,
   sideBar: false,
   currentProject: '',
+  connectionError: '',
   setUser: () => {},
   setToken: () => {},
   setSideBar: () => {},
-  setCurrentProject: () => {}
+  setCurrentProject: () => {},
+  setConnectionError: () => {}
 })
 
 export const ContextProvider = ({children}) => {
@@ -16,6 +18,7 @@ export const ContextProvider = ({children}) => {
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [sideBar, setSideBar] = useState(false);
   const [currentProject, setCurrentProject] = useState('');
+  const [connectionError, setConnectionError] = useState(false);
   
 
   const setToken = (token) => {
@@ -33,10 +36,12 @@ export const ContextProvider = ({children}) => {
       token,
       sideBar,
       currentProject,
+      connectionError,
       setUser,
       setToken,
       setSideBar,
       setCurrentProject,
+      setConnectionError
     }}>
       { children }
     </stateContext.Provider>

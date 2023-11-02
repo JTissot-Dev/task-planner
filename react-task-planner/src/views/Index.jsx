@@ -13,6 +13,8 @@ const Index = () => {
   {
     user, 
     sideBar,
+    connectionError,
+    setConnectionError
   } = useStateContext();
 
   const [projects, setProjects] = useState([]);
@@ -29,14 +31,13 @@ const Index = () => {
   }, [user.id])
 
   useEffect(() => {
-    if (user.id) {
+    if (projectsUrl) {
       getProjets();
     }
   }, [projectsUrl])
 
   const getProjets = () => {
     setLoading(true);
-    setTimeout(() => {
       axiosClient.get(projectsUrl)
       .then(({data}) => {
         setProjects(data.data);
@@ -45,9 +46,10 @@ const Index = () => {
       })
       .catch(() => {
         setLoading(false);
-      }), 1000
-    })
-  }
+        setConnectionError(prev => !prev);
+      })
+    }
+  
 
   const spinner = loading && <LargeSpinner />;
 
@@ -67,7 +69,7 @@ const Index = () => {
   
 
   return (
-    <div className={`relative flex flex-col justify-between min-h-full w-full mx-3 ${ sideBar ? "px-5" : "px-5 sm:px-20" }`} >
+    <div className={`relative flex flex-col justify-between w-full mx-3 ${ sideBar ? "px-5" : "px-5 sm:px-20" }`} >
       <div>
         <div className="border-b mt-24 border-zinc-50 border-opacity-50 flex justify-start">
           <h1 className="font-semibold text-zinc-50 text-opacity-90">
@@ -75,27 +77,28 @@ const Index = () => {
           </h1>
         </div>
         <div className="flex flex-col justify-between relative mt-5 rounded-md w-full">
-        <div className="absolute z-50 top-28 start-1/2">
-          { spinner }
-        </div>
-        <div className="mb-5 block md:flex md:items-center md:justify-between">
-          <h2 className=" text-zinc-50 text-opacity-90">Vos projets</h2>
-          <SearchBarProjects 
-            updateProjects={ updateProjects }
-            projectName={ projectName } 
-            setProjectName={ setProjectName }
-          />
-        </div>
-        <div 
-          className={`grid ${ sideBar ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"}`}>
-          <ProjectCard addProject={ true }/>
-          { projects.map((project, index) => {
-            return <ProjectCard key={index} projectId={ project.id } projectName={ project.name } />
-          }) }
-        </div>
+          <div className="absolute z-50 top-28 start-1/2">
+            { spinner }
+          </div>
+          <div className="mb-5 block md:flex md:items-center md:justify-between">
+            <h2 className=" text-zinc-50 text-opacity-90">Vos projets</h2>
+            <SearchBarProjects 
+              updateProjects={ updateProjects }
+              projectName={ projectName } 
+              setProjectName={ setProjectName }
+            />
+          </div>
+          <div 
+            className={`grid ${ sideBar ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"}`}>
+            <ProjectCard addProject={ true }/>
+              { projects && 
+                projects.map((project, index) => {
+                return <ProjectCard key={index} projectId={ project.id } projectName={ project.name } />
+            }) }
+          </div>
         </div>
       </div>
-      <div className="w-full flex justify-center my-10">
+      <div className="w-full flex justify-center mt-10 pb-5">
           <Pagination pagination={ pagination } updateProjects={ updateProjects } loading={ loading }/>
       </div>
     </div>
