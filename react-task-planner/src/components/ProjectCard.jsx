@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { AddProjectIcon } from "./icons";
-import { useStateContext } from "../context/ContextProvider";
 
-const ProjectCard = ({addProject, projectId, projectName}) => {
+
+const ProjectCard = ({addProject, projectId, projectName, toggleCreateProjectModal}) => {
 
   let projectNameCard = '';
   
@@ -15,6 +15,8 @@ const ProjectCard = ({addProject, projectId, projectName}) => {
   const handleProject = projectId => {
     if (projectId) {
       navigate(`/project/${projectId}`);
+    } else if (addProject) {
+      toggleCreateProjectModal();
     }
   }
   

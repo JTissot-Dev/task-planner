@@ -1,8 +1,6 @@
 import { Button, Modal } from "flowbite-react";
 
 const LogoutModal = ({openModal, setOpenModal, logout}) => {
-  
-
 
   return (
     <>
@@ -12,14 +10,14 @@ const LogoutModal = ({openModal, setOpenModal, logout}) => {
         show={openModal === 'dismissible'}
         onClose={() => setOpenModal(undefined)}>
         <Modal.Header
-          className="bg-slate-900 rounded-t-lg border border-zinc-50 border-opacity-50"
+          className="bg-slate-900 rounded-t-lg border border-zinc-50 border-b-0 border-opacity-50"
         >
           <span className="text-zinc-50 text-opacity-90">
             Déconnexion
           </span>
         </Modal.Header>
         <Modal.Body
-          className="bg-slate-900 border border-zinc-50 border-opacity-50"
+          className="bg-slate-900 border border-zinc-50 border-b-0 border-opacity-50"
         >
           <div className="space-y-6">
             <p className="text-base text-zinc-50 text-opacity-90 leading-relaxed">
@@ -33,7 +31,7 @@ const LogoutModal = ({openModal, setOpenModal, logout}) => {
             <Button
               className="w-32 me-2"
               gradientDuoTone="purpleToBlue"
-              onClick={() => logout()}>
+              onClick={ logout }>
                 Confirmer
             </Button>
             <button 

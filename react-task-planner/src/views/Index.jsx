@@ -1,11 +1,14 @@
 import { useStateContext } from "../context/ContextProvider";
-import ProjectCard from "../components/ProjectCard";
-import axiosClient from "../axios-client";
+
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import ProjectCard from "../components/ProjectCard";
+import axiosClient from "../axios-client";
 import Pagination from "../components/pagination";
 import LargeSpinner from "../components/Spinners/LargeSpinner";
 import SearchBarProjects from "../components/SearchBarProjects";
+import CreateProjectModal from "../components/modals/CreateProjectModal";
 
 const Index = () => {
 
@@ -23,7 +26,9 @@ const Index = () => {
   const [pagination, setPagination] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
   const [projectName, setProjectName] = useState('');
-
+  const [createProjectModal, setCreateProjectModal] = useState(false);
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -49,8 +54,22 @@ const Index = () => {
         setConnectionError(prev => !prev);
       })
     }
-  
 
+    const createProject = inputCreateProject => {
+      setLoading(true);
+      const payload = {
+        name: inputCreateProject,
+        userId: user.id
+      }
+      axiosClient.post('/project', payload)
+        .then(({data}) => {
+          navigate(`/project/${data.data.id}`)
+        })
+        .catch(() => {
+          setLoading(false);
+        })
+    }
+  
   const spinner = loading && <LargeSpinner />;
 
   const updateProjects = (currentFolio) => {
@@ -65,6 +84,10 @@ const Index = () => {
     } else {
       setProjectsUrl(`/project?user-id=${user.id}&name=${projectName}`);
     }
+  }
+
+  const toggleCreateProjectModal = () => {
+    setCreateProjectModal(prev => !prev);
   }
   
 
@@ -90,7 +113,7 @@ const Index = () => {
           </div>
           <div 
             className={`grid ${ sideBar ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"}`}>
-            <ProjectCard addProject={ true }/>
+            <ProjectCard addProject={ true } toggleCreateProjectModal={ toggleCreateProjectModal }/>
               { projects && 
                 projects.map((project, index) => {
                 return <ProjectCard key={index} projectId={ project.id } projectName={ project.name } />
@@ -101,6 +124,15 @@ const Index = () => {
       <div className="w-full flex justify-center mt-10 pb-5">
           <Pagination pagination={ pagination } updateProjects={ updateProjects } loading={ loading }/>
       </div>
+      {
+        createProjectModal &&
+        (
+          <CreateProjectModal 
+            toggleCreateProjectModal={ toggleCreateProjectModal }
+            createProject={ createProject }
+            loading={ loading }/>
+        )
+      }
     </div>
   )
 }

@@ -19,7 +19,6 @@ const DefaultLayout = () => {
     setUser, 
     setToken, 
     setSideBar,
-    setConnectionError
   } = useStateContext();
 
   if (!token) {

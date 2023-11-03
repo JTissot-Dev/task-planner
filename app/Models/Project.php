@@ -17,7 +17,8 @@ class Project extends Model
      * @var string
      */
     protected $fillable = [
-        'name'
+        'name',
+        'user_id'
     ];
 
     public function lists(): HasMany
