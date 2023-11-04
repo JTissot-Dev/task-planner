@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button } from "flowbite-react";
 import { CloseIcon } from "../icons";
+import { useStateContext } from "../../context/ContextProvider";
 import DefaultSpinner from "../Spinners/DefaultSpinner";
 
-const CreateProjectModal = ({toggleCreateProjectModal, loading, createProject}) => {
+const CreateProjectModal = () => {
   
+  const {loading, setCreateProjectModal, createProject} = useStateContext(); 
   const [projectName, setProjectName] = useState('');
 
   const handleProjectName = e => {
@@ -38,7 +40,7 @@ const CreateProjectModal = ({toggleCreateProjectModal, loading, createProject}) 
                   <button 
                     type="button" 
                     className="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center hover:bg-zinc-50" 
-                    onClick={ toggleCreateProjectModal }>
+                    onClick={() => setCreateProjectModal(false)}>
                       <CloseIcon />
                       <span className="sr-only">Close modal</span>
                   </button>
@@ -72,7 +74,7 @@ const CreateProjectModal = ({toggleCreateProjectModal, loading, createProject}) 
                   <button 
                     type="button" 
                     className="w-24 bg-slate-950 border border-zinc-50 border-opacity-50 text-zinc-50 text-opacity-90 hover:bg-slate-900 font-medium rounded-lg text-sm px-5 py-2.5"
-                    onClick={ toggleCreateProjectModal }
+                    onClick={() => setCreateProjectModal(false)}
                   >
                     Annuler
                   </button>

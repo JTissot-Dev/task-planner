@@ -24,7 +24,7 @@ const List = ({list}) => {
           </button>
         </div>
         <div 
-          className="flex flex-col h-full overflow-y-auto scrollbar-thin scrollbar-track-slate-500 scrollbar-thumb-slate-800 my-2 mx-1 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
+          className="flex flex-col h-full overflow-y-auto scrollbar-thin scrollbar-track-zinc-400 scrollbar-thumb-slate-800 my-2 mx-1 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
         >
           {
             list.tasks &&

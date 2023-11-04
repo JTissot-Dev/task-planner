@@ -1,12 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosClient from "../axios-client";
 import Header from "../components/header/Header";
 import LogoutModal from "../components/modals/LogoutModal";
 import { useState } from "react";
 import SideBar from "../components/SideBar";
 import ConnectionAlert from "../components/alerts/ConnectionAlert";
+import CreateProjectModal from "../components/modals/CreateProjectModal";
 
 
 const DefaultLayout = () => {
@@ -15,7 +17,9 @@ const DefaultLayout = () => {
     user, 
     token, 
     sideBar,
-    connectionError, 
+    connectionError,
+    createProjectModal,
+    currentProject, 
     setUser, 
     setToken, 
     setSideBar,
@@ -24,6 +28,14 @@ const DefaultLayout = () => {
   if (!token) {
     return <Navigate to="/login" />;
   }
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentProject.id) {
+      navigate(`/project/${currentProject.id}`)
+    }
+  }, [currentProject.id]);
 
   console.log(token);
 
@@ -82,6 +94,9 @@ const DefaultLayout = () => {
         openModal={ openModal } 
         setOpenModal={ setOpenModal }
         logout={ logout }/>
+      {
+        createProjectModal && <CreateProjectModal />
+      }
     </div>
 
   )

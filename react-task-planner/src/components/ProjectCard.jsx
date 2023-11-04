@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { AddProjectIcon } from "./icons";
 
 
-const ProjectCard = ({addProject, projectId, projectName, toggleCreateProjectModal}) => {
+const ProjectCard = ({addProject, projectId, projectName, setCreateProjectModal}) => {
 
   let projectNameCard = '';
   
@@ -16,7 +16,7 @@ const ProjectCard = ({addProject, projectId, projectName, toggleCreateProjectMod
     if (projectId) {
       navigate(`/project/${projectId}`);
     } else if (addProject) {
-      toggleCreateProjectModal();
+      setCreateProjectModal(true);
     }
   }
   

@@ -1,12 +1,13 @@
-import { AddProjectIcon } from "./icons";
+
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../context/ContextProvider";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axiosClient from "../axios-client";
 import DefaultSpinner from "./Spinners/DefaultSpinner";
 import { AngleDownIcon } from "./icons";
-import { useStateContext } from "../context/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { AddProjectIcon } from "./icons";
 
 
 const SideBar = () => {
@@ -16,7 +17,7 @@ const SideBar = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
 
-  const {user} = useStateContext();
+  const {user, setCreateProjectModal} = useStateContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -88,7 +89,10 @@ const SideBar = () => {
               Mes projets
             </h3>
           </div>
-          <button className="flex z-10 items-center w-full mt-5 px-2 py-2 transition duration-200 ease-out hover:ease-in text-gray-900 rounded-lg hover:bg-purple-600 hover:bg-opacity-40 group">
+          <button 
+            className="flex z-10 items-center w-full mt-5 px-2 py-2 transition duration-200 ease-out hover:ease-in text-gray-900 rounded-lg hover:bg-purple-600 hover:bg-opacity-40 group"
+            onClick={() => setCreateProjectModal(true)}
+          >
             <AddProjectIcon style="text-zinc-50 text-opacity-90 w-3 h-3"/>
             <span className="ml-3 text-zinc-50 text-opacity-90">Nouveau projet</span>
           </button>
