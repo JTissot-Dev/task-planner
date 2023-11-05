@@ -1,6 +1,6 @@
 import { Alert } from "flowbite-react";
 
-const ErrorAlert = ({dismissAlert}) => {
+const ErrorAlert = ({message, dismissAlert}) => {
   return(
     <Alert
       color="failure"
@@ -9,7 +9,7 @@ const ErrorAlert = ({dismissAlert}) => {
     >
       <span>
         <p>
-          Erreur lors de la mise à jour des informations
+          { message }
         </p>
       </span>
     </Alert>

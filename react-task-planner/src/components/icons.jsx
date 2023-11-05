@@ -136,3 +136,19 @@ export const CloseIcon = () => {
 		</svg>
 	)
 }
+
+export const BurgerMenuProjectIcon = () => {
+	return (
+		<svg className="w-7 h-7 text-zinc-50 text-opacity-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
+    	<path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01"/>
+  	</svg>
+	)
+}
+
+export const DeleteIcon = () => {
+	return (
+		<svg className="w-4 h-4 text-zinc-50 text-opacity-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+    	<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+  	</svg>
+	)
+}

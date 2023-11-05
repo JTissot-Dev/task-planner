@@ -57,10 +57,12 @@ const UserAccount = () => {
 
   axiosClient.put(`/user-account/${user.id}`, payload)
     .then(() => {
-      setUpdateNotification(<SuccessAlert dismissAlert={ dismissAlert } />);
+      const message = 'Vos informations ont bien été mises à jour';
+      setUpdateNotification(<SuccessAlert message={ message } dismissAlert={ dismissAlert } />);
     })
     .catch(()=> {
-      setUpdateNotification(<ErrorAlert dismissAlert={ dismissAlert } />);
+      const message = 'Erreur lors de la mise à jour des informations';
+      setUpdateNotification(<ErrorAlert message={ message } dismissAlert={ dismissAlert } />);
     })
   }
 

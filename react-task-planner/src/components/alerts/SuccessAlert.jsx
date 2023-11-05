@@ -1,6 +1,6 @@
 import { Alert } from "flowbite-react";
 
-const SuccessAlert = ({dismissAlert}) => {
+const SuccessAlert = ({message, dismissAlert}) => {
   return(
     <Alert
       color="success"
@@ -9,7 +9,7 @@ const SuccessAlert = ({dismissAlert}) => {
     >
       <span>
         <p>
-          Vos informations ont bien été mises à jour
+          { message }
         </p>
       </span>
     </Alert>

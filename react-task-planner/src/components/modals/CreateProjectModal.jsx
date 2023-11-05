@@ -3,18 +3,18 @@ import { Button } from "flowbite-react";
 import { CloseIcon } from "../icons";
 import { useStateContext } from "../../context/ContextProvider";
 import DefaultSpinner from "../Spinners/DefaultSpinner";
+import useOutsideClick from "../../useOutsideClick";
+import { useRef } from "react";
 
 const CreateProjectModal = () => {
   
   const {loading, setCreateProjectModal, createProject} = useStateContext(); 
-  const [projectName, setProjectName] = useState('');
+  const projectName = useRef();
+  const clickOutside = useOutsideClick(() => setCreateProjectModal(prev => !prev));
 
-  const handleProjectName = e => {
-    setProjectName(e.target.value);
-  }
   const handleSubmit = e => {
     e.preventDefault();
-    createProject(projectName);
+    createProject(projectName.current.value);
   }
 
   const defaultSpinner = loading && <DefaultSpinner />;
@@ -24,7 +24,8 @@ const CreateProjectModal = () => {
       className="fixed top-0 bg-slate-900 bg-opacity-40 flex justify-center items-start md:items-center left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >
       <div className="relative w-full max-w-lg max-h-full">
-          <form 
+          <form
+            ref={ clickOutside } 
             className="relative bg-slate-900 rounded-lg shadow border border-zinc-50 border-opacity-50"
             onSubmit={ handleSubmit }
           >
@@ -57,8 +58,7 @@ const CreateProjectModal = () => {
                 type="text" 
                 id="project-name" 
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2" 
-                value={ projectName }
-                onChange={ handleProjectName }
+                ref={ projectName }
                 required>
                 </input>
               </div>

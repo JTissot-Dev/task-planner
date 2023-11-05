@@ -68,7 +68,10 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $data = $request->validated();
+        $project->name = $data['name'];
+        $project->save();
+        return new ProjectResource($project);
     }
 
     /**
