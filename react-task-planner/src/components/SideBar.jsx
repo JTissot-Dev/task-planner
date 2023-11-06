@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,23 +11,39 @@ import { AddProjectIcon } from "./icons";
 
 const SideBar = () => {
 
-  const [projects, setProjects] = useState([]);
+  const {
+    user,
+    sideProjects,
+    currentSidePage, 
+    setSideProjects, 
+    setCreateProjectModal,
+    setCurrentSidePage} = useStateContext();
+
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(2);
-
-  const {user, setCreateProjectModal} = useStateContext();
+  
   const navigate = useNavigate();
 
   useEffect(() => {
     getProjets();
   }, [])
+  
+  const filterProjects = (prevProjects, newProjects) => {
+    const prevProjectsId = prevProjects.map(prevProject => prevProject.id);
+    const filteredProjects = newProjects.filter(newProject => !prevProjectsId.includes(newProject.id))
+    return filteredProjects;
+  }
 
   const getProjets = () => {
     setLoading(true);
     axiosClient.get(`/project?user-id=${user.id}`)
       .then(({data}) => {
-        setProjects(data.data);
+        if (sideProjects.length === 0) {
+          setSideProjects(data.data);
+        } else {
+          const newProjects = filterProjects(sideProjects, data.data);
+          setSideProjects((prevData) => [...prevData, ...newProjects]);
+        }
         setLoading(false);
       })
       .catch(() => {
@@ -38,12 +53,20 @@ const SideBar = () => {
 
   const getMoreProjects = () => {
     setLoading(true);
-      axiosClient.get(`/project?user-id=${user.id}&page=${currentPage}`)
+      console.log(currentSidePage);
+      axiosClient.get(`/project?user-id=${user.id}&page=${currentSidePage}`)
       .then(({data}) => {
-        setProjects((prevData) => [...prevData, ...data.data]);
-        setCurrentPage((prevPage) => prevPage + 1); 
+        const newProjects = filterProjects(sideProjects, data.data);
+        console.log(sideProjects);
+        console.log(data.data)
+        if (newProjects.length > 0) {
+          setSideProjects((prevData) => [...prevData, ...newProjects]);
+          setCurrentSidePage((prevPage) => prevPage + 1); 
+          setHasMore(true);
+        } else {
+          setHasMore(false);
+        }
         setLoading(false);
-        data.data.length > 0 ? setHasMore(true): setHasMore(false);
       })
       .catch(() => {
         setLoading(false);
@@ -55,7 +78,7 @@ const SideBar = () => {
       navigate(`/project/${projectId}`);
     }
 
-  const projectItems = projects.map((projectItem, index) => {
+  const projectItems = sideProjects.map((projectItem, index) => {
     return (
       <div key={ index } className="my-2">
         <button
@@ -69,7 +92,7 @@ const SideBar = () => {
   })
 
   const spinner = loading && <DefaultSpinner />;
-  const getMoreProjectButton = (!loading && hasMore && projects.length >= 7) &&
+  const getMoreProjectButton = (!loading && hasMore && sideProjects.length >= 7) &&
     (
       <button className="flex flex-col z-10 items-center justify-center w-full px-2 py-2 transition duration-200 ease-out hover:ease-in rounded-lg hover:bg-slate-800 hover:bg-opacity-50 group"
               onClick={getMoreProjects}
@@ -100,7 +123,7 @@ const SideBar = () => {
             className="mb-14 mt-2 space-y-2 font-medium text-gray-900"
           >
             <InfiniteScroll
-                dataLength={projects.length}
+                dataLength={sideProjects.length}
                 next={getMoreProjects}
                 hasMore={hasMore}
                 scrollableTarget="scrollableDiv"

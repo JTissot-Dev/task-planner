@@ -10,6 +10,8 @@ const stateContext = createContext({
   loading: false,
   connectionError: '',
   createProjectModal: false,
+  sideProjects: [],
+  currentSidePage: 2,
   setUser: () => {},
   setToken: () => {},
   setSideBar: () => {},
@@ -17,7 +19,9 @@ const stateContext = createContext({
   setLoading: () => {},
   setConnectionError: () => {},
   setCreateProjectModal: () => {},
-  createProject: () => {}
+  createProject: () => {},
+  setSideProjects: () => {},
+  setCurrentSidePage: () => {}
 })
 
 export const ContextProvider = ({children}) => {
@@ -28,6 +32,8 @@ export const ContextProvider = ({children}) => {
   const [currentProject, setCurrentProject] = useState({});
   const [connectionError, setConnectionError] = useState(false);
   const [createProjectModal, setCreateProjectModal] = useState(false);
+  const [sideProjects, setSideProjects] = useState([]);
+  const [currentSidePage, setCurrentSidePage] = useState(2);
 
   const setToken = (token) => {
     _setToken(token);
@@ -46,7 +52,9 @@ export const ContextProvider = ({children}) => {
     }
     axiosClient.post('/project', payload)
       .then(({data}) => {
-        setCurrentProject(data.data)
+        console.log(data);
+        setSideProjects(prevData => [data.data, ...prevData]);
+        setCurrentProject(data.data);
         setLoading(false);
         setCreateProjectModal(false);
       })
@@ -64,6 +72,8 @@ export const ContextProvider = ({children}) => {
       currentProject,
       connectionError,
       createProjectModal,
+      sideProjects,
+      currentSidePage,
       setUser,
       setToken,
       setSideBar,
@@ -71,7 +81,9 @@ export const ContextProvider = ({children}) => {
       setCurrentProject,
       setConnectionError,
       setCreateProjectModal,
-      createProject
+      createProject,
+      setSideProjects,
+      setCurrentSidePage
     }}>
       { children }
     </stateContext.Provider>

@@ -15,7 +15,7 @@ const Project = () => {
 
   let { projectId } = useParams();
 
-  const {sideBar, setConnectionError} = useStateContext();
+  const {sideBar, setConnectionError, sideProjects, setSideProjects} = useStateContext();
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(false);
   const [project, setProject] = useState({});
@@ -31,15 +31,15 @@ const Project = () => {
   }, [projectId]);
 
   const getProject = () => {
-      axiosClient.get(`/project/${projectId}`)
-        .then(({data}) => {
-          setProject(data.data);
-          setProjectName(data.data.name);
-        })
-        .catch(() => {
-          setLoading(false);
-          setConnectionError(prev => !prev);
-        })
+    axiosClient.get(`/project/${projectId}`)
+      .then(({data}) => {
+        setProject(data.data);
+        setProjectName(data.data.name);
+      })
+      .catch(() => {
+        setLoading(false);
+        setConnectionError(prev => !prev);
+      })
     }
 
   const getLists = () => {
@@ -55,29 +55,37 @@ const Project = () => {
         })
     }
 
-    const handleProjectName = e => setProjectName(e.target.value);
-      
-    const updateProject = () => {
-      if (projectName) {
-        const payload = {
-          name: projectName
-        };
-        axiosClient.put(`/project/${project.id}`, payload)
-        .then(({data}) => {
-          setProject({
-            ...project,
+  const handleProjectName = e => setProjectName(e.target.value);
+    
+  const updateProject = () => {
+    if (projectName) {
+      const payload = {
+        name: projectName
+      };
+      axiosClient.put(`/project/${project.id}`, payload)
+      .then(({data}) => {
+        setProject({
+          ...project,
+          name: data.data.name
+        });
+        const updatedSideProject = sideProjects.map(sideProject => {
+          return sideProject.id === data.data.id ?
+          {
+            ...sideProject,
             name: data.data.name
-          });
+          } :
+          sideProject;
         })
-        .catch(() => {
-          const message = 'Erreur lors de la mise à jour du projet';
-          setUpdateNotification(<ErrorAlert message={ message } dismissAlert={ () => setUpdateNotification('') } />)
-        })
-      } else {
-        setProjectName(project.name);
-      }
+        setSideProjects(updatedSideProject);
+      })
+      .catch(() => {
+        const message = 'Erreur lors de la mise à jour du projet';
+        setUpdateNotification(<ErrorAlert message={ message } dismissAlert={ () => setUpdateNotification('') } />)
+      })
+    } else {
+      setProjectName(project.name);
     }
-  
+  }
 
   const spinner = loading && <LargeSpinner />;
   
