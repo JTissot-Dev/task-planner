@@ -18,7 +18,9 @@ return new class extends Migration
             $table->date('deadline');
             $table->timestamps();
             $table->unsignedBigInteger('list_id');
-            $table->foreign('list_id')->references('id')->on('lists');
+            $table->foreign('list_id')
+                  ->references('id')->on('lists')
+                  ->onDelete('cascade');
         });
     }
 

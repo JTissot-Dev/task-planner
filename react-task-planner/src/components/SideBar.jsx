@@ -14,10 +14,12 @@ const SideBar = () => {
   const {
     user,
     sideProjects,
-    currentSidePage, 
+    currentSidePage,
+    deletedProject, 
     setSideProjects, 
     setCreateProjectModal,
-    setCurrentSidePage} = useStateContext();
+    setCurrentSidePage,
+    setDeletedProject} = useStateContext();
 
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ const SideBar = () => {
 
   useEffect(() => {
     getProjets();
-  }, [])
+  }, [deletedProject])
   
   const filterProjects = (prevProjects, newProjects) => {
     const prevProjectsId = prevProjects.map(prevProject => prevProject.id);
@@ -36,9 +38,15 @@ const SideBar = () => {
 
   const getProjets = () => {
     setLoading(true);
+    console.log(sideProjects);
     axiosClient.get(`/project?user-id=${user.id}`)
       .then(({data}) => {
-        if (sideProjects.length === 0) {
+        if (deletedProject) {
+          setSideProjects(data.data);
+          setDeletedProject(false);
+          setCurrentSidePage(2);
+          setHasMore(true);
+        } else if (sideProjects.length < 7) {
           setSideProjects(data.data);
         } else {
           const newProjects = filterProjects(sideProjects, data.data);
@@ -57,8 +65,6 @@ const SideBar = () => {
       axiosClient.get(`/project?user-id=${user.id}&page=${currentSidePage}`)
       .then(({data}) => {
         const newProjects = filterProjects(sideProjects, data.data);
-        console.log(sideProjects);
-        console.log(data.data)
         if (newProjects.length > 0) {
           setSideProjects((prevData) => [...prevData, ...newProjects]);
           setCurrentSidePage((prevPage) => prevPage + 1); 

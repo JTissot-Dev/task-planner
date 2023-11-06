@@ -33,8 +33,8 @@ const DefaultLayout = () => {
 
   useEffect(() => {
     if (currentProject.id) {
-      navigate(`/project/${currentProject.id}`)
-    }
+      navigate(`/project/${currentProject.id}`);
+    } 
   }, [currentProject.id]);
 
   console.log(token);

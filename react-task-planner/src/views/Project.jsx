@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import { useEffect } from "react";
 import axiosClient from "../axios-client";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
 import List from "../components/List";
 import { AddProjectIcon } from "../components/icons";
@@ -10,20 +11,30 @@ import { BurgerMenuProjectIcon } from "../components/icons";
 import { DeleteIcon } from "../components/icons";
 import useOutsideClick from "../useOutsideClick";
 import ErrorAlert from "../components/alerts/ErrorAlert";
+import DeleteProjectModal from "../components/modals/DeleteProjectModal";
 
 const Project = () => {
 
   let { projectId } = useParams();
 
-  const {sideBar, setConnectionError, sideProjects, setSideProjects} = useStateContext();
+  const {
+    sideBar, 
+    setConnectionError, 
+    sideProjects, 
+    setSideProjects,
+    setCurrentProject,
+    setDeletedProject} = useStateContext();
+
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [project, setProject] = useState({});
   const [projectName, setProjectName] = useState('');
   const [updateNotification, setUpdateNotification] = useState('');
+  const [deleteProjectModal, setDeleteProjectModal] = useState(false);
   const [dropDownMenu, setDropDownMenu] = useState(false);
   const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev))
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProject()
@@ -87,7 +98,24 @@ const Project = () => {
     }
   }
 
+  const deleteProject = () => {
+    setDeleteLoading(true);
+    axiosClient.delete(`/project/${project.id}`)
+    .then(() => {
+      setDeletedProject(true);
+      setCurrentProject({});
+      navigate("/index");
+    })
+    .catch(() => {
+      setDeleteLoading(false);
+      setDeleteProjectModal(false);
+      const message = 'Erreur lors de la suppression du projet';
+      setUpdateNotification(<ErrorAlert message={ message } dismissAlert={ () => setUpdateNotification('') } />)
+    })
+  }
+  
   const spinner = loading && <LargeSpinner />;
+
   
   const dropDownProjectMenu = dropDownMenu &&
     (
@@ -96,7 +124,10 @@ const Project = () => {
       ref = { clickOutside }
     >
       <li>
-        <button className="flex p-2 items-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200">
+        <button 
+          className="flex p-2 items-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200"
+          onClick={() => setDeleteProjectModal(true) }
+        >
           <DeleteIcon />
           <p className="ms-2 text-sm">Supprimer le projet</p>
         </button>
@@ -158,6 +189,15 @@ const Project = () => {
           )
         }
       </div>
+
+      {
+        deleteProjectModal && 
+          <DeleteProjectModal 
+            loading={deleteLoading}
+            deleteProject={ deleteProject } 
+            setDeleteProjectModal={ setDeleteProjectModal }
+          />
+      }
     </div>
   )
 }
