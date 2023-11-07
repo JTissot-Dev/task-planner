@@ -23,7 +23,8 @@ const stateContext = createContext({
   createProject: () => {},
   setSideProjects: () => {},
   setCurrentSidePage: () => {},
-  setDeletedProject: () => {}
+  setDeletedProject: () => {},
+  resetContext: () => {}
 })
 
 export const ContextProvider = ({children}) => {
@@ -45,6 +46,19 @@ export const ContextProvider = ({children}) => {
     } else {
       localStorage.removeItem('ACCESS_TOKEN');
     }
+  }
+
+  const resetContext = () => {
+    setUser({});
+    setToken(null);
+    setSideBar(false);
+    setLoading(false);
+    setCurrentProject({});
+    setConnectionError(false);
+    setCreateProjectModal(false);
+    setSideProjects([]);
+    setCurrentSidePage(2);
+    setDeletedProject(false);
   }
 
   const createProject = inputCreateProject => {
@@ -88,7 +102,8 @@ export const ContextProvider = ({children}) => {
       createProject,
       setSideProjects,
       setCurrentSidePage,
-      setDeletedProject
+      setDeletedProject,
+      resetContext
     }}>
       { children }
     </stateContext.Provider>

@@ -23,6 +23,7 @@ const DefaultLayout = () => {
     setUser, 
     setToken, 
     setSideBar,
+    resetContext
   } = useStateContext();
 
   if (!token) {
@@ -68,8 +69,7 @@ const DefaultLayout = () => {
   const logout = () => {
     axiosClient.post('/logout')
       .then(() => {
-        setUser({})
-        setToken(null)
+        resetContext();
       })
   }
   

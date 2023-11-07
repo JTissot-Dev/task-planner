@@ -101,13 +101,13 @@ const UserAccount = () => {
           <div className="relative z-0 w-full mb-10 group">
               <input 
                 type="text" 
-                name="floating_first_name" 
-                id="floating_first_name" 
+                name="floating_last_name" 
+                id="floating_last_name" 
                 className="block py-2.5 px-0 w-full text-sm text-zinc-50 text-opacity-50 bg-transparent border-0 border-b border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-purple-600 peer" 
                 placeholder=" " 
                 required
-                value={ user.first_name }
-                onChange={ firstNameHandler }
+                value={ user.last_name }
+                onChange={ lastNameHandler }
               />
               <label 
                 htmlFor="floating_first_name" 
@@ -119,13 +119,13 @@ const UserAccount = () => {
           <div className="relative z-0 w-full mb-10 group">
               <input 
                 type="text" 
-                name="floating_last_name" 
-                id="floating_last_name" 
+                name="floating_first_name" 
+                id="floating_first_name" 
                 className="block py-2.5 px-0 w-full text-sm text-zinc-50 text-opacity-50 bg-transparent border-0 border-b border-gray-300 appearance-none   focus:outline-none focus:ring-0 focus:border-purple-600 peer" 
                 placeholder=" " 
                 required
-                value={ user.last_name }
-                onChange={ lastNameHandler }
+                value={ user.first_name }
+                onChange={ firstNameHandler }
               />
               <label 
                 htmlFor="floating_last_name" 

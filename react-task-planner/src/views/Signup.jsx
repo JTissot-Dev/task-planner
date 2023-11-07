@@ -29,51 +29,30 @@ const Signup = () => {
 
   const {setUser, setToken} = useStateContext();
 
-  const firstNameHandler = e => {
+  const handleformInputValue = e => {
     setFormInputValue({
       ...formInputValue,
-      firstName: e.target.value
+      [e.target.name]: e.target.value
     })
   }
 
-  const lastNameHandler = e => {
-    setFormInputValue({
-      ...formInputValue,
-      lastName: e.target.value
+  const emailErrorHandler = e => {
+    setEntryError({
+      ...entryError,
+      emailError: (!emailRegex.test(e.target.value) && e.target.value.length > 0) &&
+      "Adresse e-mail invalide"
+    }) 
+  }
+
+  const passwordErrorHandler = e => {
+    setEntryError({
+      ...entryError,
+      passwordError: (!passwordRegex.test(e.target.value) && e.target.value.length > 0) &&
+      "Mot de passe: au moin une majuscule et > 8 caractères"
     })
   }
 
-  const emailHandler = e => {
-    setFormInputValue({
-      ...formInputValue,
-      email: e.target.value
-    })
-  }
-
-    const emailErrorHandler = e => {
-      setEntryError({
-        ...entryError,
-        emailError: (!emailRegex.test(e.target.value) && e.target.value.length > 0) &&
-        "Adresse e-mail invalide"
-      }) 
-    }
-          
-  const passwordHandler = e => {
-    setFormInputValue({
-      ...formInputValue,
-      password: e.target.value
-    })
-  }
-
-    const passwordErrorHandler = e => {
-      setEntryError({
-        ...entryError,
-        passwordError: (!passwordRegex.test(e.target.value) && e.target.value.length > 0) &&
-        "Mot de passe: au moin une majuscule et > 8 caractères"
-      })
-    }
-
-  const passwordConfirmationHandler = e => {
+  const handlepasswordConfirmation = e => {
     setFormInputValue({
       ...formInputValue,
       passwordConfirmation: e.target.value
@@ -132,11 +111,12 @@ const Signup = () => {
           </div>
           <TextInput
             id="last-name"
+            name="lastName"
             required
             type="text"
             sizing="sm"
             value={ formInputValue.lastName }
-            onChange={ lastNameHandler }
+            onChange={ handleformInputValue }
           />
         </div>
         <div className="mb-2">
@@ -149,11 +129,12 @@ const Signup = () => {
           </div>
           <TextInput
             id="first-name"
+            name="firstName"
             required
             type="text"
             sizing="sm"
             value={ formInputValue.firstName }
-            onChange={ firstNameHandler }
+            onChange={ handleformInputValue }
           />
         </div>
         <div className="mb-1">
@@ -166,12 +147,13 @@ const Signup = () => {
           </div>
           <TextInput
             id="email1"
+            name="email"
             placeholder="nom.prenom@taskplanner.com"
             required
             type="email"
             sizing="sm"
             value={ formInputValue.email }
-            onChange={ emailHandler }
+            onChange={ handleformInputValue }
             onBlur={ emailErrorHandler }
           />
           <div className="text-xs h-1 text-red-700">
@@ -189,11 +171,12 @@ const Signup = () => {
           <div className="relative">
             <TextInput
               id="password1"
+              name="password"
               required
               type="password"
               sizing="sm"
               value={ formInputValue.password }
-              onChange={ passwordHandler }
+              onChange={ handleformInputValue }
               onBlur={ passwordErrorHandler }
             />
             <div className="text-xs h-1 text-red-700">
@@ -212,11 +195,12 @@ const Signup = () => {
           <div className="relative">
             <TextInput
               id="password2"
+              name="passwordConfirmation"
               required
               type="password"
               sizing="sm"
               value={ formInputValue.passwordConfirmation }
-              onChange={ passwordConfirmationHandler }
+              onChange={ handlepasswordConfirmation }
             />
             <div className="text-xs h-1 text-red-700">
             { entryError.passwordConfirmationError }
