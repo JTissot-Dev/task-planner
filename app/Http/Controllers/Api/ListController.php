@@ -12,6 +12,7 @@ use Illuminate\Database\QueryException;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
 
+
 class ListController extends Controller
 {
     /**
@@ -37,7 +38,22 @@ class ListController extends Controller
      */
     public function store(StoreListTRequest $request)
     {
-        //
+        try {
+
+            $data = $request->validated();
+            $list = ListT::create([
+                'title' => $data['title'],
+                'project_id' => $data['projectId'],
+                'position' => $data['position']
+            ]);
+
+            return new ListResource($list);
+        
+        } catch (QueryException $e) {
+            response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

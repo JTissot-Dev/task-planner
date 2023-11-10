@@ -20,6 +20,7 @@ class ListT extends Model
      */
     protected $fillable = [
         'title',
+        'project_id',
         'position'
     ];
 
