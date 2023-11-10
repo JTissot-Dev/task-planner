@@ -79,7 +79,7 @@ const Index = () => {
           </h1>
         </div>
         <div className="flex flex-col justify-between relative mt-5 rounded-md w-full">
-          <div className="absolute z-50 top-28 start-1/2">
+          <div className={`fixed z-50 top-36 -ms-4 start-1/2 ${sideBar && "ms-28"} `}>
             { spinner }
           </div>
           <div className="mb-5 block md:flex md:items-center md:justify-between">

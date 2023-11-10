@@ -1,17 +1,15 @@
-import { useParams } from "react-router-dom"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom"
 import axiosClient from "../axios-client";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
 import List from "../components/List";
-import { AddProjectIcon } from "../components/icons";
 import LargeSpinner from "../components/Spinners/LargeSpinner";
 import { BurgerMenuProjectIcon } from "../components/icons";
 import { DeleteIcon } from "../components/icons";
 import useOutsideClick from "../useOutsideClick";
 import ErrorAlert from "../components/alerts/ErrorAlert";
 import DeleteProjectModal from "../components/modals/DeleteProjectModal";
+import AddListItem from "../components/AddListItem";
 
 const Project = () => {
 
@@ -30,9 +28,10 @@ const Project = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [project, setProject] = useState({});
   const [projectName, setProjectName] = useState('');
-  const [updateNotification, setUpdateNotification] = useState('');
+  const [errorNotification, setErrorNotification] = useState('');
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
   const [dropDownMenu, setDropDownMenu] = useState(false);
+  const [addList, setAddList] = useState(false);
   const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev))
   const navigate = useNavigate();
 
@@ -66,6 +65,7 @@ const Project = () => {
         })
     }
 
+  console.log(project.id);
   const handleProjectName = e => setProjectName(e.target.value);
     
   const updateProject = () => {
@@ -91,7 +91,7 @@ const Project = () => {
       })
       .catch(() => {
         const message = 'Erreur lors de la mise à jour du projet';
-        setUpdateNotification(<ErrorAlert message={ message } dismissAlert={ () => setUpdateNotification('') } />)
+        setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />)
       })
     } else {
       setProjectName(project.name);
@@ -110,12 +110,11 @@ const Project = () => {
       setDeleteLoading(false);
       setDeleteProjectModal(false);
       const message = 'Erreur lors de la suppression du projet';
-      setUpdateNotification(<ErrorAlert message={ message } dismissAlert={ () => setUpdateNotification('') } />)
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />)
     })
   }
   
   const spinner = loading && <LargeSpinner />;
-
   
   const dropDownProjectMenu = dropDownMenu &&
     (
@@ -125,7 +124,7 @@ const Project = () => {
     >
       <li>
         <button 
-          className="flex p-2 items-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200"
+          className="flex p-2 items-center justify-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 w-full sm:w-fit"
           onClick={() => setDeleteProjectModal(true) }
         >
           <DeleteIcon />
@@ -147,7 +146,7 @@ const Project = () => {
         <h1 className="h-full">
           <input
             type="text"
-            className="h-full w-52 sm:w-80 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-lg  py-0 border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
+            className="h-full w-52 sm:w-80 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-lg py-0 border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
             value={ projectName }
             onChange={ handleProjectName }
             onBlur={ updateProject }
@@ -157,15 +156,15 @@ const Project = () => {
         <button 
           className="hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 h-full rounded-md p-2.5"
           onClick={() => setDropDownMenu(prev => !prev) }
-          >
+        >
           <BurgerMenuProjectIcon />
         </button>
-        <div className="absolute top-14 end-0">
+        <div className="absolute top-14 end-0 w-full sm:w-fit">
           { dropDownProjectMenu }
         </div>
       </div>
       <div className="h-10">
-          { updateNotification }
+          { errorNotification }
       </div>
       <div 
         className="flex h-screen pt-1 pb-8 overflow-y-hidden overflow-x-auto scrollbar scrollbar-track-zinc-200 scrollbar-thumb-zinc-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
@@ -176,17 +175,15 @@ const Project = () => {
           })
         }
         {
-          !loading &&
-          (
-            <div className="w-80 grow-0 shrink-0">
-            <button
-              className="p-3 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-zinc-50 bg-opacity-10 hover:bg-purple-800 hover:bg-opacity-50 rounded-xl"
-            >
-              <AddProjectIcon style="text-zinc-50 text-opacity-90 w-3 h-3 me-2"/>
-              Nouvelle liste
-            </button>
-          </div>
-          )
+          !loading && 
+            <AddListItem 
+              addList={ addList } 
+              setAddList={ setAddList } 
+              projectId={ project.id }
+              lists={ lists } 
+              setLists={ setLists }
+              setErrorNotification={ setErrorNotification }
+            />
         }
       </div>
 

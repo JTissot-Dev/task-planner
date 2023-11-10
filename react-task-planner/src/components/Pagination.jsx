@@ -64,7 +64,7 @@ const Pagination = ({ pagination, updateProjects, loading }) => {
   return (
     <nav 
       aria-label="Page navigation example"
-      className={loading || pagination.length <= 3 ? "hidden" : ""}
+      className={pagination.length <= 3 ? "hidden" : ""}
     >
       <ul className="flex items-center -space-x-px h-10 text-base">
         <li>

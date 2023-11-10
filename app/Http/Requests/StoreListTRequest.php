@@ -11,7 +11,7 @@ class StoreListTRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreListTRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:50',
+            'projectId' => 'required',
+            'position' => 'required'
         ];
     }
 }
