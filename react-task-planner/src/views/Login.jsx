@@ -1,16 +1,18 @@
-import { Label, TextInput, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
+import axiosClient from "../axios-client";
+import { Link } from "react-router-dom";
+import { Label, TextInput, Button } from "flowbite-react";
 import { ShowPasswordIcon } from "../components/icons";
 import MotionGuestForms from "../components/MotionGuestForms";
-import axiosClient from "../axios-client";
 import { useStateContext } from "../context/ContextProvider";
+import DefaultSpinner from "../components/Spinners/DefaultSpinner";
 
 const Login = () => {
 
   const {setUser, setToken} = useStateContext();
   const [passwordShow, setPasswordShow] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const [loading, setLoading] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -19,6 +21,7 @@ const Login = () => {
   }
 
   const loginSubmit = e => {
+    setLoading(true);
     e.preventDefault();
     const payload = {
       email: emailRef.current.value,
@@ -29,8 +32,10 @@ const Login = () => {
       .then(({data}) => {
         setUser(data);
         setToken(data.token);
+        setLoading(false);
       })
       .catch(error => {
+        setLoading(false);
         const response = error.response;
         if (response && response.status === 422) {
           if (response.data.errors) {
@@ -46,9 +51,12 @@ const Login = () => {
   return (
     <>
       <MotionGuestForms>
-        <form className="py-5 px-8 flex flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40"
+        <form className="relative py-5 px-8 flex flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40"
               onSubmit={ loginSubmit }
         >
+          <div className="z-50 absolute top-5 start-1/2">
+            { loading && <DefaultSpinner /> }
+          </div>
           <div>
             <img src="/logo/brand-logo.png"></img>
           </div>

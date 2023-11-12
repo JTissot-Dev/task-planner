@@ -8,7 +8,7 @@ import ErrorAlert from "../components/alerts/ErrorAlert";
 
 const UserAccount = () => {
 
-  const {user, setUser} = useStateContext();
+  const {user, sideBar, setUser} = useStateContext();
   const [emailLabel, setEmailLabel] = useState('Adresse e-mail');
   const [updateNotification, setUpdateNotification] = useState('');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -68,7 +68,7 @@ const UserAccount = () => {
 
 
   return (
-    <div className="w-full mx-3 lg:mx-52">
+    <div className={ `w-full mx-3 ${sideBar ? "lg:mx-28 xl:mx-40" : "lg:mx-52 xl:mx-60"} ` }>
       <div className="mb-2 mt-28 border-b border-gray-300">
         <h1 className="font-semibold text-zinc-50 text-opacity-90">Mon compte</h1>
       </div>
