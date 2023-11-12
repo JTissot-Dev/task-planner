@@ -1,26 +1,85 @@
+import { useState, useEffect, useRef } from "react";
+import axiosClient from "../axios-client";
 import { AddProjectIcon } from "./icons";
-import { PreviousIcon } from "./icons";
-import { NextIcon } from "./icons";
+import { ExpandListIcon } from "./icons";
 import TaskItem from "./TaskItem";
+import ErrorAlert from "./alerts/ErrorAlert";
 
-const List = ({list}) => {
+
+const List = ({list, setErrorNotification}) => {
+  
+  const [title, setTitle] = useState({
+    title: '',
+    prevTitle: ''
+  });
+
+  const titleRef = useRef();
+
+  useEffect(() => {
+    setTitle({
+      title: list.title,
+      prevTitle: list.title
+    });
+  }, [list.projectId])
+
+  useEffect(() => {
+    titleRef.current.height = 'auto';
+    titleRef.current.style.height = `${titleRef.current.scrollHeight}px`;
+  }, [titleRef.current, title.title])
+
+  const handleTitle = e => {
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
+    setTitle({
+      ...title,
+      title: e.target.value
+    });
+  }
+
+  const updateList = e => {
+    if (title.title) {
+      const payload = {
+        title: title.title
+      }
+      axiosClient.put(`/list/${list.id}`, payload)
+      .then(({data}) => {
+        setTitle({
+          title: data.data.title,
+          prevTitle: data.data.title
+        });
+      })
+      .catch(() => {
+        const message = 'Erreur lors de la mise à jour de la liste';
+        setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
+      })
+    } else {
+      setTitle({
+        ...title,
+        title: title.prevTitle
+      })
+    }
+  }
 
   return (
     <div className="h-full">
       <div className="max-h-full flex flex-col justify-between grow-0 shrink-0 w-80 mb-10 me-8 rounded-xl border border-zinc-50 border-opacity-50">
-        <div className="flex w-full pt-3 pb-1 px-3 justify-between items-center rounded-t-md">
-          <button
-            className="p-3 hover:bg-zinc-50 transition duration-200 hover:ease-in-out hover:bg-opacity-10 rounded-full"
-          >
-            <PreviousIcon />
-          </button>
-          <h2 className="">
-            { list.title }
+        <div className="flex w-full pt-3 pb-1 px-3 justify-between items-start rounded-t-md">
+          <h2 className="w-full me-5">
+            <textarea
+              rows="1"
+              ref={ titleRef }
+              className="max-h-32 w-full resize-none overflow-y-hidden flex flex-col flex-grow ms-2 p-1 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-md border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
+              value={ title.title }
+              onChange={ handleTitle }
+              onBlur={ updateList }
+            >
+              { title.title }
+            </textarea>
           </h2>
           <button
-            className="p-3 hover:bg-zinc-50 transition duration-200 hover:ease-in-out hover:bg-opacity-10 rounded-full"
+            className="p-2  hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-full"
           >
-            <NextIcon />
+            <ExpandListIcon />
           </button>
         </div>
         <div 

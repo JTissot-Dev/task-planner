@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ListResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
-use App\Models\Task;
 use App\Http\Resources\TaskResource;
 
 
@@ -66,7 +65,6 @@ class ListController extends Controller
                             ->orderBy('position', 'asc')
                             ->get();
             return TaskResource::collection($tasks);
-            // return new ListResource($list);
         } catch (QueryException $e) {
             return response()->json([
                 'message' => $e
@@ -77,9 +75,19 @@ class ListController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateListTRequest $request, ListT $listT)
-    {
-        //
+    public function update(UpdateListTRequest $request, ListT $list)
+    {   
+        try {
+            $data = $request->validated();
+            $list->title = $data['title'];
+            $list->save();
+            return new ListResource($list);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => $e
+            ], 500);
+        }
+        
     }
 
     /**

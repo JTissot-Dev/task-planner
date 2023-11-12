@@ -110,7 +110,7 @@ const Project = () => {
       setDeleteLoading(false);
       setDeleteProjectModal(false);
       const message = 'Erreur lors de la suppression du projet';
-      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />)
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
     })
   }
   
@@ -171,7 +171,11 @@ const Project = () => {
         { 
           lists &&
           lists.map((list, index) => {
-            return <List key={ index } list={ list }/>
+            return <List 
+                      key={ index } 
+                      list={ list } 
+                      setErrorNotification={ setErrorNotification } 
+                    />
           })
         }
         {

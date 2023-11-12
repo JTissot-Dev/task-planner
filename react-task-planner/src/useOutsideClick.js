@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { useEffect } from "react";
+import { useRef, useEffect } from "react";
+
 
 const useOutsideClick = (callback) => {
   const ref = useRef();

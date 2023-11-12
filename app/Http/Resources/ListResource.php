@@ -18,7 +18,8 @@ class ListResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'position' => $this->position,
-            'tasks' => $this->tasks
+            'tasks' => $this->tasks,
+            'projectId' => $this->project_id
         ];
     }
 }

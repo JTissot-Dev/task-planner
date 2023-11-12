@@ -25,9 +25,6 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(null);
   const [projectName, setProjectName] = useState('');
 
-  
-  
-
   useEffect(() => {
     setLoading(true);
     setProjectsUrl(`/project?user-id=${user.id}`);
@@ -79,7 +76,7 @@ const Index = () => {
           </h1>
         </div>
         <div className="flex flex-col justify-between relative mt-5 rounded-md w-full">
-          <div className={`fixed z-50 top-36 -ms-4 start-1/2 ${sideBar && "ms-28"} `}>
+          <div className={`fixed z-50 top-36 -ms-4 start-1/2 ${sideBar && "ms-0 sm:ms-28"} `}>
             { spinner }
           </div>
           <div className="mb-5 block md:flex md:items-center md:justify-between">
