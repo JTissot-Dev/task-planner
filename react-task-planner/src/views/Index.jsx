@@ -91,8 +91,8 @@ const Index = () => {
             className={`grid ${ sideBar ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"}`}>
             <ProjectCard addProject={ true } setCreateProjectModal={ setCreateProjectModal }/>
               { projects && 
-                projects.map((project, index) => {
-                return <ProjectCard key={index} projectId={ project.id } projectName={ project.name } />
+                projects.map(project => {
+                return <ProjectCard key={ project.id } projectId={ project.id } projectName={ project.name } />
             }) }
           </div>
         </div>

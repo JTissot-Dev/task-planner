@@ -20,8 +20,7 @@ const Project = () => {
     setConnectionError, 
     sideProjects, 
     setSideProjects,
-    setCurrentProject,
-    setDeletedProject} = useStateContext();
+    setCurrentProject} = useStateContext();
 
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +64,8 @@ const Project = () => {
         })
     }
 
-  console.log(project.id);
+  console.log(lists)
+
   const handleProjectName = e => setProjectName(e.target.value);
     
   const updateProject = () => {
@@ -102,7 +102,7 @@ const Project = () => {
     setDeleteLoading(true);
     axiosClient.delete(`/project/${project.id}`)
     .then(() => {
-      setDeletedProject(true);
+      setSideProjects(prev => prev.filter(prevProject => prevProject.id != project.id));
       setCurrentProject({});
       navigate("/index");
     })
@@ -170,10 +170,11 @@ const Project = () => {
         className="flex h-screen pt-1 pb-8 overflow-y-hidden overflow-x-auto scrollbar scrollbar-track-zinc-200 scrollbar-thumb-zinc-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
         { 
           lists &&
-          lists.map((list, index) => {
+          lists.map(list => {
             return <List 
-                      key={ index } 
-                      list={ list } 
+                      key={ list.id } 
+                      list={ list }
+                      setLists={ setLists } 
                       setErrorNotification={ setErrorNotification } 
                     />
           })

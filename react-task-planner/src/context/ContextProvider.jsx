@@ -12,7 +12,6 @@ const stateContext = createContext({
   createProjectModal: false,
   sideProjects: [],
   currentSidePage: 2,
-  deletedProject: false,
   setUser: () => {},
   setToken: () => {},
   setSideBar: () => {},
@@ -23,7 +22,6 @@ const stateContext = createContext({
   createProject: () => {},
   setSideProjects: () => {},
   setCurrentSidePage: () => {},
-  setDeletedProject: () => {},
   resetContext: () => {}
 })
 
@@ -37,7 +35,6 @@ export const ContextProvider = ({children}) => {
   const [createProjectModal, setCreateProjectModal] = useState(false);
   const [sideProjects, setSideProjects] = useState([]);
   const [currentSidePage, setCurrentSidePage] = useState(2);
-  const [deletedProject, setDeletedProject] = useState(false);
 
   const setToken = (token) => {
     _setToken(token);
@@ -58,7 +55,6 @@ export const ContextProvider = ({children}) => {
     setCreateProjectModal(false);
     setSideProjects([]);
     setCurrentSidePage(2);
-    setDeletedProject(false);
   }
 
   const createProject = inputCreateProject => {
@@ -91,7 +87,6 @@ export const ContextProvider = ({children}) => {
       createProjectModal,
       sideProjects,
       currentSidePage,
-      deletedProject,
       setUser,
       setToken,
       setSideBar,
@@ -102,7 +97,6 @@ export const ContextProvider = ({children}) => {
       createProject,
       setSideProjects,
       setCurrentSidePage,
-      setDeletedProject,
       resetContext
     }}>
       { children }

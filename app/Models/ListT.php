@@ -24,6 +24,17 @@ class ListT extends Model
         'position'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($list) {
+            self::where('project_id', $list->project_id)
+                ->where('position', '>', $list->position)
+                ->decrement('position');
+        });
+    }
+
 
     public function project(): BelongsTo
     {

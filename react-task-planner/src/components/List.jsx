@@ -4,16 +4,24 @@ import { AddProjectIcon } from "./icons";
 import { ExpandListIcon } from "./icons";
 import TaskItem from "./TaskItem";
 import ErrorAlert from "./alerts/ErrorAlert";
+import { DeleteIcon } from "./icons";
+import useOutsideClick from "../useOutsideClick";
+import DeleteListModal from "./modals/DeleteListModal";
 
 
-const List = ({list, setErrorNotification}) => {
+const List = ({list, setErrorNotification, setLists}) => {
   
   const [title, setTitle] = useState({
     title: '',
     prevTitle: ''
   });
 
+  const [dropDownMenu, setDropDownMenu] = useState(false);
+  const [deleteListModal, setDeleteListModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const titleRef = useRef();
+  const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev));
 
   useEffect(() => {
     setTitle({
@@ -60,9 +68,53 @@ const List = ({list, setErrorNotification}) => {
     }
   }
 
+  const deleteList = () => {
+    setLoading(true);
+    axiosClient.delete(`/list/${list.id}`)
+    .then(() => {
+      setLists(prev => prev.filter(prevList => prevList.id != list.id))
+      setLists(prev => prev.map(prevList => {
+          return {
+            ...prevList,
+            position: prevList.position > list.position ? prevList.position -1 : prevList.position
+          }
+      }));
+      setLoading(false);
+      setDeleteListModal(false);
+    })
+    .catch(() => {
+      setLoading(false);
+      setDeleteListModal(false);
+      const message = 'Erreur lors de la suppression de la liste';
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
+    })
+  }
+
+
+  const dropDownListMenu = dropDownMenu &&
+    (
+    <ul 
+      className="bg-slate-950 w-full border-y border-zinc-50 border-opacity-50"
+      ref = { clickOutside }
+    >
+      <li className="w-full">
+        <button 
+          className="flex w-full p-3 items-center justify-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200"
+          onClick={() => setDeleteListModal(true) }
+        >
+          <DeleteIcon />
+          <p className="ms-2 text-sm">Supprimer la liste</p>
+        </button>
+      </li>
+    </ul>
+    )
+
   return (
     <div className="h-full">
-      <div className="max-h-full flex flex-col justify-between grow-0 shrink-0 w-80 mb-10 me-8 rounded-xl border border-zinc-50 border-opacity-50">
+      <div className="relative max-h-full flex flex-col justify-between grow-0 shrink-0 w-80 mb-10 me-8 rounded-xl border border-zinc-50 border-opacity-50">
+        <div className="absolute w-full top-14">
+          { dropDownListMenu }
+        </div>
         <div className="flex w-full pt-3 pb-1 px-3 justify-between items-start rounded-t-md">
           <h2 className="w-full me-5">
             <textarea
@@ -78,6 +130,7 @@ const List = ({list, setErrorNotification}) => {
           </h2>
           <button
             className="p-2  hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-full"
+            onClick={ () => setDropDownMenu(true) }
           >
             <ExpandListIcon />
           </button>
@@ -87,8 +140,8 @@ const List = ({list, setErrorNotification}) => {
         >
           {
             list.tasks &&
-            list.tasks.map((task, index) => {
-              return <TaskItem key={ index } task= {task} />
+            list.tasks.map(task => {
+              return <TaskItem key={ task.id } task= {task} />
             })
           }
           <button
@@ -99,6 +152,8 @@ const List = ({list, setErrorNotification}) => {
           </button>
         </div>
       </div>
+
+      { deleteListModal && <DeleteListModal loading={ loading } setDeleteListModal={ setDeleteListModal } deleteList={ deleteList }/> }
     </div>
 
   )

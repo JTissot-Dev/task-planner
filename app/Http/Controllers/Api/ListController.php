@@ -93,8 +93,10 @@ class ListController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ListT $listT)
+    public function destroy(ListT $list)
     {
-        //
+        $list->delete();
+
+        return response('', 204);
     }
 }

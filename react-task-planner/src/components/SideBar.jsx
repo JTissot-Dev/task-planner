@@ -15,11 +15,9 @@ const SideBar = () => {
     user,
     sideProjects,
     currentSidePage,
-    deletedProject, 
     setSideProjects, 
     setCreateProjectModal,
-    setCurrentSidePage,
-    setDeletedProject} = useStateContext();
+    setCurrentSidePage} = useStateContext();
 
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -28,7 +26,7 @@ const SideBar = () => {
 
   useEffect(() => {
     getProjets();
-  }, [deletedProject])
+  }, [])
   
   const filterProjects = (prevProjects, newProjects) => {
     const prevProjectsId = prevProjects.map(prevProject => prevProject.id);
@@ -41,12 +39,7 @@ const SideBar = () => {
     console.log(sideProjects);
     axiosClient.get(`/project?user-id=${user.id}`)
       .then(({data}) => {
-        if (deletedProject) {
-          setSideProjects(data.data);
-          setDeletedProject(false);
-          setCurrentSidePage(2);
-          setHasMore(true);
-        } else if (sideProjects.length < 7) {
+        if (sideProjects.length < 7) {
           setSideProjects(data.data);
         } else {
           const newProjects = filterProjects(sideProjects, data.data);
@@ -84,9 +77,9 @@ const SideBar = () => {
       navigate(`/project/${projectId}`);
     }
 
-  const projectItems = sideProjects.map((projectItem, index) => {
+  const projectItems = sideProjects.map(projectItem => {
     return (
-      <div key={ index } className="my-2">
+      <div key={ projectItem.id } className="my-2">
         <button
           onClick={() => handleProject(projectItem.id)}
           className="flex z-10 bg-slate-800 bg-opacity-50 items-center w-full p-2 transition duration-200 ease-out hover:ease-in text-gray-900 rounded-lg hover:bg-opacity-80  group"
