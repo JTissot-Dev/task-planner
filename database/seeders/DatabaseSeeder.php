@@ -38,7 +38,8 @@ class DatabaseSeeder extends Seeder
                         'description' => Str::random(30),
                         'deadline' => $seedDate,
                         'position' => $z,
-                        'list_id' => $listId    
+                        'list_id' => $listId,
+                        'priority' => 'Basse'     
                     ]);
                 }
             }

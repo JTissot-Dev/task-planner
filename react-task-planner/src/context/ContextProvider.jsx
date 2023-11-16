@@ -97,7 +97,7 @@ export const ContextProvider = ({children}) => {
       createProject,
       setSideProjects,
       setCurrentSidePage,
-      resetContext
+      resetContext,
     }}>
       { children }
     </stateContext.Provider>

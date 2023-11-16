@@ -32,7 +32,7 @@ const DeleteProjectModal = ({loading, deleteProject, setDeleteProjectModal}) => 
               </div>
               <div className="flex items-center justify-between p-5 rounded-t">
                   <h3 className="text-md font-medium text-zinc-50 text-opacity-90">
-                      Nouveau projet
+                      Supprimer un projet
                   </h3>
                   <button 
                     type="button" 

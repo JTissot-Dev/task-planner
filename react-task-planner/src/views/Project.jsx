@@ -64,8 +64,6 @@ const Project = () => {
         })
     }
 
-  console.log(lists)
-
   const handleProjectName = e => setProjectName(e.target.value);
     
   const updateProject = () => {
@@ -104,6 +102,7 @@ const Project = () => {
     .then(() => {
       setSideProjects(prev => prev.filter(prevProject => prevProject.id != project.id));
       setCurrentProject({});
+      setDeleteLoading(false);
       navigate("/index");
     })
     .catch(() => {
@@ -159,7 +158,7 @@ const Project = () => {
         >
           <BurgerMenuProjectIcon />
         </button>
-        <div className="absolute top-14 end-0 w-full sm:w-fit">
+        <div className="absolute z-50 top-14 end-0 w-full sm:w-fit">
           { dropDownProjectMenu }
         </div>
       </div>

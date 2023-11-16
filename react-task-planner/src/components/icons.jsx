@@ -167,3 +167,84 @@ export const ExpandListIcon = () => {
 		</svg>
 	)
 }
+
+export const EditIcon = () => {
+	return (
+		<svg className="w-3 h-3 text-zinc-50 text-opacity-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    	<path 
+				d="m13.835 7.578-.005.007-7.137 7.137 2.139 2.138 7.143-7.142-2.14-2.14Zm-10.696 3.59 2.139 2.14 7.138-7.137.007-.005-2.141-2.141-7.143 7.143Zm1.433 4.261L2 12.852.051 18.684a1 1 0 0 0 1.265 1.264L7.147 18l-2.575-2.571Zm14.249-14.25a4.03 4.03 0 0 0-5.693 0L11.7 2.611 17.389 8.3l1.432-1.432a4.029 4.029 0 0 0 0-5.689Z"
+			/>
+  	</svg>
+	)
+}
+
+export const DescriptionIcon = () => {
+	return (
+		<svg className="w-5 h-5 text-zinc-50 text-opacity-80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+    	<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h14M1 6h14M1 11h7"/>
+  	</svg>
+	)
+}
+
+export const CardIcon = ({style}) => {
+	return (
+		<svg 
+			className={`w-6 h-6 text-zinc-50 text-opacity-80 ${style ? style : ""}`} 
+			aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+			width="20" 
+			height="18" 
+			fill="none" 
+			viewBox="0 0 20 18"	
+		>
+    	<path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M1 7h18M4 4h.01M7 4h.01M10 4h.01M3 17h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"/>
+  	</svg>
+	)
+}
+
+export const PriorityIcon = () => {
+	return (
+		<svg className="w-6 h-6 text-zinc-50 text-opacity-80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 18">
+    	<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"  d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4"/>
+  	</svg>
+	)
+}
+
+export const DeadLineIcon = () => {
+	return (
+		<svg className="w-6 h-6 text-zinc-50 text-opacity-80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+    	<path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+  	</svg>
+	)
+}
+
+export const DateIcon = () => {
+	return (
+		<svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+			<path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+		</svg>
+	)
+}
+
+export const CalendarIcon = () => {
+	return (
+		<svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+    	<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+  	</svg>
+	)
+}
+
+export const PreviousCalendarIcon = () => {
+	return (
+		<svg className="w-3 h-3 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+			<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4"/>
+		</svg>
+	)
+}
+
+export const NextCalendarIcon = () => {
+	return (
+		<svg className="w-3 h-3 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+			<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
+		</svg>
+	)
+}
