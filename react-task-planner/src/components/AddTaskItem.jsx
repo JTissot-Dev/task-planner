@@ -4,49 +4,48 @@ import useOutsideClick from "../useOutsideClick";
 import axiosClient from "../axios-client";
 import ErrorAlert from "./alerts/ErrorAlert";
 
-const AddListItem = ({
-  addList, 
-  setAddList,
-  projectId,
-  lists,
-  setLists,
+const AddTaskItem = ({
+  addTask, 
+  setAddTask,
+  listId,
+  tasks,
+  setTasks,
   setErrorNotification
 }) => {
 
-  const useOutside = useOutsideClick(() => setAddList(false));
+  const useOutside = useOutsideClick(() => setAddTask(false));
   const inputTitle = useRef(null);
 
   useEffect(() => {
-    if (addList) {
+    if (addTask) {
       inputTitle.current.focus();
     }
-  }, [addList]);
+  }, [addTask]);
 
   const handleSubmitForm = e => {
     e.preventDefault();
-    setAddList(false);
+    setAddTask(false);
     const payload = {
       title: inputTitle.current.value,
-      projectId: projectId,
-      position: lists.length + 1
+      listId: listId,
+      position: tasks.length + 1
     };
-    axiosClient.post('/list', payload)
+    axiosClient.post('/task', payload)
     .then(({data}) => {
-      console.log(data);
-      setLists(prev => [...prev, data.data]);
+      setTasks(prev => [...prev, data.data]);
     })
     .catch(() => {
-      const message = 'Erreur lors de la création de la liste';
+      const message = 'Erreur lors de la création de la tâche';
       setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />)
     })
   }
 
   return (
     <div 
-      className="w-80 grow-0 shrink-0"
+      className="w-full my-2 grow-0 shrink-0"
     >
     {
-      addList ?
+      addTask ?
       (
         <form 
           onSubmit={ handleSubmitForm }
@@ -71,11 +70,11 @@ const AddListItem = ({
       ) :
       (
       <button
-        className="p-3 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-slate-800 bg-opacity-50 hover:bg-purple-800 hover:bg-opacity-50 rounded-lg"
-        onClick={() => setAddList(true) }
+        className="px-4 py-5 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-slate-800 bg-opacity-50 hover:bg-purple-800 hover:bg-opacity-50 rounded-lg"
+        onClick={() => setAddTask(true) }
       >
         <AddProjectIcon style="text-zinc-50 text-opacity-90 w-3 h-3 me-2"/>
-        Nouvelle liste
+        Nouvelle tâche
       </button>
       )
     }
@@ -83,4 +82,4 @@ const AddListItem = ({
   )
 }
 
-export default AddListItem;
+export default AddTaskItem;

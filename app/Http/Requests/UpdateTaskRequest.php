@@ -23,9 +23,9 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:50',
-            'priority' => 'string',
-            'description' => 'string',
-            'deadline' => 'date',
+            'priority' => '',
+            'description' => '',
+            'deadline' => '',
             'position' => 'required|integer'
         ];
     }

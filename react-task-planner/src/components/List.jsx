@@ -7,6 +7,7 @@ import ErrorAlert from "./alerts/ErrorAlert";
 import { DeleteIcon } from "./icons";
 import useOutsideClick from "../useOutsideClick";
 import DeleteListModal from "./modals/DeleteListModal";
+import AddTaskItem from "./AddTaskItem";
 
 
 const List = ({list, setErrorNotification, setLists}) => {
@@ -19,9 +20,11 @@ const List = ({list, setErrorNotification, setLists}) => {
     projectId: null
   });
 
+  const [tasks, setTasks] = useState([]);
   const [dropDownMenu, setDropDownMenu] = useState(false);
   const [deleteListModal, setDeleteListModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [addTask, setAddTask] = useState(false);
 
   const titleRef = useRef();
   const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev));
@@ -32,9 +35,10 @@ const List = ({list, setErrorNotification, setLists}) => {
       title: list.title,
       prevTitle: list.title,
       position: list.position,
-      projectId: list.projectId,
-      tasks: list.tasks
+      projectId: list.projectId
     });
+
+    setTasks(list.tasks);
   }, [list.projectId])
 
   useEffect(() => {
@@ -147,17 +151,18 @@ const List = ({list, setErrorNotification, setLists}) => {
           className="flex flex-col h-full overflow-y-auto scrollbar-thin scrollbar-track-zinc-400 scrollbar-thumb-slate-800 my-2 mx-1 px-3 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
         >
           {
-            listItem.tasks &&
-            listItem.tasks.map(task => {
+            tasks &&
+            tasks.map(task => {
               return <TaskItem key={ task.id } task= {task} setErrorNotification={ setErrorNotification }/>
             })
           }
-          <button
-            className="my-2 p-5 bg-slate-800 bg-opacity-50 rounded-md shadow-md shadow-slate-950 flex items-center text-sm transition duration-200 hover:ease-in-out hover:bg-purple-800 hover:bg-opacity-50"
-          >
-            <AddProjectIcon style="text-zinc-50 text-opacity-90 w-3 h-3 me-2"/>
-            Nouvelle tâche
-          </button>
+          <AddTaskItem 
+            addTask={ addTask }
+            setAddTask={ setAddTask }
+            listId={ listItem.id }
+            tasks={ tasks }
+            setTasks={ setTasks }
+          />
         </div>
       </div>
 

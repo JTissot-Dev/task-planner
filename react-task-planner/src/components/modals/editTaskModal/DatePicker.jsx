@@ -31,7 +31,7 @@ const DatePicker = ({handleDeadline, deadline}) => {
       next: () => <NextIcon />,
     },
     datepickerClassNames: "top-86",
-    defaultDate: new Date(deadline),
+    defaultDate: deadline && new Date(deadline),
     language: "fr",
     disabledDates: [],
     weekDays: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],

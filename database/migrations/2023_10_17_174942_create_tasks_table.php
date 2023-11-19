@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
-            $table->date('deadline');
+            $table->string('description')->nullable();
+            $table->date('deadline')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('list_id');
             $table->foreign('list_id')

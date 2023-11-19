@@ -23,8 +23,20 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreTaskRequest $request)
-    {
-        //
+    {   
+        try {
+            $data = $request->validated();
+            $task = Task::create([
+                'title' => $data['title'],
+                'position' => $data['position'],
+                'list_id' => $data['listId']
+            ]);
+            return new TaskResource($task);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la création de la tâche'
+            ], 500);
+        }
     }
 
     /**
