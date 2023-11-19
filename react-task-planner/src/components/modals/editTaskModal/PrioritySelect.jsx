@@ -1,9 +1,9 @@
 import Select from "react-select";
 
-const PrioritySelect = ({taskItem}) => {
+const PrioritySelect = ({handleSelect, priority}) => {
 
-  const defaultPriority = taskItem.priority &&
-  { value: taskItem.priority, label: taskItem.priority };
+  const defaultPriority = priority &&
+  { value: priority, label: priority };
 
   return (
     <Select
@@ -11,13 +11,14 @@ const PrioritySelect = ({taskItem}) => {
       classNamePrefix="select"
       defaultValue={ defaultPriority }
       isClearable={true}
-      name="color"
+      name="priority"
       isSearchable={false}
       options={[
         { value: 'Basse', label: 'Basse' },
         { value: 'Moyenne', label: 'Moyenne' },
         { value: 'Haute', label: 'Haute' }
       ]}
+      onChange={ handleSelect }
       theme={(theme) => ({
         ...theme,
         colors: {

@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { EditIcon } from "./icons";
 import EditTaskModal from "./modals/editTaskModal/EditTaskModal";
+import ErrorAlert from "./alerts/ErrorAlert";
+import axiosClient from "../axios-client";
 
-const TaskItem = ({task}) => {
+
+const TaskItem = ({task, setErrorNotification}) => {
 
   const [taskItem, setTaskItem] = useState({
     id: null,
     title: '',
-    prevTitle: '',
     description: '',
     deadline: '',
     position: null,
@@ -15,23 +17,64 @@ const TaskItem = ({task}) => {
     listId: null
   });
 
-  const [editTaskModal, setEditTaskModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [formInput, setFormInput] = useState({
+    title: '',
+    description: '',
+    priority: '',
+    deadline: ''
+  });
 
   const [hoverButton, setHoverButton] = useState(false);
+  const [editTaskModal, setEditTaskModal] = useState(false);
+  const [submitUpdate, setSubmitUpdate] = useState(false); 
 
   useEffect(() => {
     setTaskItem({
       id: task.id,
       title: task.title,
-      prevTitle: task.title,
       description: task.description,
       deadline: task.deadline,
       position: task.position,
       priority: task.priority,
       listId: task.listId
     });
+
+    setFormInput({
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+      deadline: task.deadline
+    })
   }, [])
+
+  useEffect(() => {
+    if (submitUpdate) {
+      updateTask();
+    }
+  }, [submitUpdate])
+
+
+  const updateTask = () => {
+    const payload = {
+      title: formInput.title,
+      description: formInput.description,
+      priority: formInput.priority,
+      deadline: formInput.deadline,
+      position: taskItem.position
+    }
+    axiosClient.put(`/task/${taskItem.id}`, payload)
+    .then(({data}) => {
+      console.log(data);
+      setTaskItem(data.data);
+      setSubmitUpdate(false);
+    })
+    .catch(() => {
+      const message = 'Erreur lors de la mise à jour';
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
+      setSubmitUpdate(false);
+    })
+  }
+
 
   return (
     <div
@@ -40,7 +83,7 @@ const TaskItem = ({task}) => {
       onMouseLeave={ () => setHoverButton(false) }
     > 
         <h4 className="w-44 break-words whitespace-pre-line">
-          { taskItem.title }
+          { taskItem.title ? taskItem.title : task.title}
         </h4>
       {
       hoverButton &&
@@ -55,10 +98,10 @@ const TaskItem = ({task}) => {
       { 
       editTaskModal &&  
         <EditTaskModal 
-          loading={ loading } 
+          setSubmitUpdate={ setSubmitUpdate } 
           setEditTaskModal={setEditTaskModal}
-          taskItem={ taskItem }
-          setTaskItem={ setTaskItem }
+          formInput={ formInput }
+          setFormInput={ setFormInput }
           setHoverButton={ setHoverButton }
         />
       }

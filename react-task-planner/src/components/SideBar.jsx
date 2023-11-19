@@ -38,7 +38,6 @@ const SideBar = () => {
 
   const getProjets = () => {
     setLoading(true);
-    console.log(sideProjects);
     axiosClient.get(`/project?user-id=${user.id}`)
       .then(({data}) => {
         if (sideProjects.length < 7) {
@@ -56,7 +55,6 @@ const SideBar = () => {
 
   const getMoreProjects = () => {
     setLoading(true);
-      console.log(currentSidePage);
       axiosClient.get(`/project?user-id=${user.id}&page=${currentSidePage}`)
       .then(({data}) => {
         const newProjects = filterProjects(sideProjects, data.data);

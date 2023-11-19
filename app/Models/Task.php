@@ -18,6 +18,9 @@ class Task extends Model
         'title',
         'description',
         'deadline',
+        'priority',
+        'position',
+        'list_id'
     ];
 
     public function list(): BelongsTo

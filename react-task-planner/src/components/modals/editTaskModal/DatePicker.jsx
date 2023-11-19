@@ -4,7 +4,7 @@ import { NextIcon } from "../../icons";
 import { PreviousIcon } from "../../icons";
 
 
-const DatePicker = ({handleFormInput, deadline}) => {
+const DatePicker = ({handleDeadline, deadline}) => {
 
   const options = {
     title: "",
@@ -52,7 +52,7 @@ const DatePicker = ({handleFormInput, deadline}) => {
 
 	return (
 		<div>
-			<Datepicker options={options} onChange={handleFormInput} show={show} setShow={handleClose} />
+			<Datepicker options={ options } onChange={ handleDeadline } show={ show } setShow={ handleClose } />
 		</div>
 	)
 }

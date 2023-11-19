@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
+use Illuminate\Database\QueryException;
 
 class TaskController extends Controller
 {
@@ -38,8 +39,20 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateTaskRequest $request, Task $task)
-    {
-        //
+    {   
+        try {
+            $data = $request->validated();
+            $task->title = $data['title'];
+            $task->description = $data['description'];
+            $task->deadline = $data['deadline'];
+            $task->priority = $data['priority'];
+            $task->save();
+            return new TaskResource($task);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la mise à jour de la tâche'
+            ], 500);
+        }
     }
 
     /**

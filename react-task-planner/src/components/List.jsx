@@ -32,7 +32,8 @@ const List = ({list, setErrorNotification, setLists}) => {
       title: list.title,
       prevTitle: list.title,
       position: list.position,
-      projectId: list.projectId
+      projectId: list.projectId,
+      tasks: list.tasks
     });
   }, [list.projectId])
 
@@ -146,9 +147,9 @@ const List = ({list, setErrorNotification, setLists}) => {
           className="flex flex-col h-full overflow-y-auto scrollbar-thin scrollbar-track-zinc-400 scrollbar-thumb-slate-800 my-2 mx-1 px-3 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
         >
           {
-            list.tasks &&
-            list.tasks.map(task => {
-              return <TaskItem key={ task.id } task= {task} />
+            listItem.tasks &&
+            listItem.tasks.map(task => {
+              return <TaskItem key={ task.id } task= {task} setErrorNotification={ setErrorNotification }/>
             })
           }
           <button
