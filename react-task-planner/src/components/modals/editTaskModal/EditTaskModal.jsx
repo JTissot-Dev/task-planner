@@ -19,12 +19,15 @@ const EditTaskModal = ({
   const descriptionRef = useRef(null);
 
   useEffect(() => {
-    titleRef.current.style.height = 'auto';
-    titleRef.current.style.height = `${titleRef.current.scrollHeight}px`;
     descriptionRef.current.style.height = 'auto';
     descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`;
     setHoverButton(false);
   }, [])
+
+  useEffect(() => {
+    titleRef.current.style.height = 'auto';
+    titleRef.current.style.height = `${titleRef.current.scrollHeight}px`;
+  }, [titleRef, formInput.title])
 
   const handleTextAreas = e => {
     if (e.target) {
@@ -59,17 +62,28 @@ const EditTaskModal = ({
         ...formInput,
         priority: e.value
       })
+    } else {
+      setFormInput({
+        ...formInput,
+        priority: null
+      })
     }
   }
 
-
   const handleDeadline = e => {
-    setHoverButton(false);
     const splitedDate = e.toLocaleDateString().split('/');
     const date = `${splitedDate[2]}-${splitedDate[1]}-${splitedDate[0]}`
     setFormInput({
       ...formInput,
       deadline: date
+    })
+  }
+
+  const handleClearDeadline = () => {
+    console.log('toto');
+    setFormInput({
+      ...formInput,
+      deadline: null
     })
   }
 
@@ -91,7 +105,7 @@ const EditTaskModal = ({
             className="relative bg-slate-900 rounded-lg shadow border border-zinc-50 border-opacity-50 pb-8"
             ref={ clickOutside }
           >
-            <div className="flex items-center justify-between p-5">
+            <div className="flex items-start justify-between p-5">
                 <div className="w-full flex items-start mb-4">
                   <CardIcon style="mt-1 me-4"/>
                   <h3 className="w-full ms-1 me-3 text-md font-medium text-zinc-50 text-opacity-90">
@@ -156,7 +170,7 @@ const EditTaskModal = ({
 
               <div className="py-4 space-y-2 w-full">
                 <div className="ms-5 mt-6 flex items-center">
-                  <DeadLineIcon />
+                  <DeadLineIcon style="w-6 h-6"/>
                   <label
                     className="ms-6 block text-md font-bold text-zinc-50 text-opacity-90"
                   >
@@ -164,7 +178,11 @@ const EditTaskModal = ({
                   </label>
                 </div>
                 <div className="w-full px-5 sm:px-16">
-                  <DatePicker handleDeadline={ handleDeadline } deadline={ formInput.deadline }/>
+                  <DatePicker 
+                    handleDeadline={ handleDeadline } 
+                    deadline={ formInput.deadline }
+                    handleClear={ handleClearDeadline }
+                  />
                 </div>
               </div>
           </form>

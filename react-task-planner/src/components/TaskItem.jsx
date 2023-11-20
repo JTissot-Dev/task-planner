@@ -5,9 +5,10 @@ import DeleteTaskModal from "./modals/DeleteTaskModal";
 import ErrorAlert from "./alerts/ErrorAlert";
 import axiosClient from "../axios-client";
 import { DeleteIcon } from "./icons";
+import { DeadLineIcon } from "./icons";
 
 
-const TaskItem = ({task, tasks, setTasks, setErrorNotification}) => {
+const TaskItem = ({task, setTasks, setErrorNotification}) => {
 
   const [taskItem, setTaskItem] = useState({
     id: null,
@@ -64,6 +65,25 @@ const TaskItem = ({task, tasks, setTasks, setErrorNotification}) => {
     }
   }
 
+  const getPriorityStyle = () => {
+    switch (taskItem.priority) {
+      case 'Basse':
+        return 'border-green-600 border-t-2 border-opacity-70';
+      case 'Moyenne':
+        return 'border-yellow-600 border-t-2 border-opacity-70';
+      case 'Haute':
+        return 'border-red-600 border-t-2 border-opacity-60';
+      default:
+        return 'border-slate-800 border-t-2 border-opacity-0';
+    }
+  }
+
+  const getDeadLineLabel = () => {
+    const deadLineSplit = taskItem.deadline.split('-');
+    const deadlineLabel = `${deadLineSplit[2]}/${deadLineSplit[1]}`
+    return deadlineLabel;
+  }
+
   const updateTask = () => {
     const payload = {
       title: formInput.title,
@@ -74,7 +94,6 @@ const TaskItem = ({task, tasks, setTasks, setErrorNotification}) => {
     }
     axiosClient.put(`/task/${taskItem.id}`, payload)
     .then(({data}) => {
-      console.log(data);
       setTaskItem(data.data);
       setSubmitUpdate(false);
     })
@@ -110,7 +129,7 @@ const TaskItem = ({task, tasks, setTasks, setErrorNotification}) => {
 
   return (
     <div
-      className="relative my-2 px-5 py-6 w-full flex justify-start text-sm bg-slate-800 bg-opacity-50 rounded-md shadow-md shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200"
+      className={`${getPriorityStyle()} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm bg-slate-800 bg-opacity-50 rounded-md shadow-md shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200`}
       onMouseEnter={ toggleHoverButton }
       onMouseLeave={ toggleHoverButton }
     > 
@@ -119,22 +138,28 @@ const TaskItem = ({task, tasks, setTasks, setErrorNotification}) => {
         </h4>
       {
       hoverButton &&
-      <div className="z-50 absolute top-1 end-1">
-        <button
-          className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-          onClick={ () => setEditTaskModal(true) }
-        >
-          <EditIcon />
-        </button>
-        <button
-          className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-          onClick={ () => setDeleteTaskModal(true) }
-        >
-          <DeleteIcon style="w-3.5 h-3.5"/>
-        </button>
-      </div>
+        <div className="z-50 absolute top-1 end-1">
+          <button
+            className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+            onClick={ () => setEditTaskModal(true) }
+          >
+            <EditIcon />
+          </button>
+          <button
+            className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+            onClick={ () => setDeleteTaskModal(true) }
+          >
+            <DeleteIcon style="w-3 h-3"/>
+          </button>
+        </div>
       }
-
+      {
+        taskItem.deadline &&
+          <div className="z-40 text-xs font-extralight flex items-center absolute bottom-3 end-4">
+            <DeadLineIcon style="w-3 h-3 me-1.5" />
+            { getDeadLineLabel() }
+          </div>
+      }
       { 
       editTaskModal &&  
         <EditTaskModal 

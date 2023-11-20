@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Datepicker from "tailwind-datepicker-react";
 import { NextIcon } from "../../icons";
 import { PreviousIcon } from "../../icons";
 
 
-const DatePicker = ({handleDeadline, deadline}) => {
-
+const DatePicker = ({handleDeadline, deadline, handleClear}) => {
+  
   const options = {
     title: "",
     autoHide: true,
@@ -50,9 +50,29 @@ const DatePicker = ({handleDeadline, deadline}) => {
 		setShow(prev => !prev);
 	}
 
+  useEffect(() => {
+    var xpathExpression = "//*[text()='Effacer']";
+    var result = document.evaluate(xpathExpression, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+    var selectedElement = result.singleNodeValue;
+    console.log(selectedElement);
+  
+    if (selectedElement) {
+      selectedElement.addEventListener('click', handleClear, true);
+
+      return () => {
+        selectedElement.removeEventListener('click', handleClear, true);
+      };
+    }
+  }, [show])
+
 	return (
 		<div>
-			<Datepicker options={ options } onChange={ handleDeadline } show={ show } setShow={ handleClose } />
+			<Datepicker 
+        options={ options } 
+        onChange={ handleDeadline }
+        show={ show } 
+        setShow={ handleClose } 
+      />
 		</div>
 	)
 }

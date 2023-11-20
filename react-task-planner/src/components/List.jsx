@@ -156,7 +156,6 @@ const List = ({list, setErrorNotification, setLists}) => {
               return <TaskItem 
                         key={ task.id } 
                         task={ task }
-                        tasks={ tasks }
                         setTasks={ setTasks }
                         setErrorNotification={ setErrorNotification }
                       />
