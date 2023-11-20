@@ -71,7 +71,14 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Task $task)
-    {
-        //
+    {   
+        try {
+            $task->delete();
+            return response('', 204);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la suppression de la tâche'
+            ], 500);
+        }
     }
 }

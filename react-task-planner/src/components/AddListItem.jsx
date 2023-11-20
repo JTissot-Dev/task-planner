@@ -71,7 +71,7 @@ const AddListItem = ({
       ) :
       (
       <button
-        className="p-3 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-slate-800 bg-opacity-50 hover:bg-purple-800 hover:bg-opacity-50 rounded-lg"
+        className="p-4 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-slate-800 bg-opacity-50 hover:bg-purple-800 hover:bg-opacity-50 rounded-lg"
         onClick={() => setAddList(true) }
       >
         <AddProjectIcon style="text-zinc-50 text-opacity-90 w-3 h-3 me-2"/>

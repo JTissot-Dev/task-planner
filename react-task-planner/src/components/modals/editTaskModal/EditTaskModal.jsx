@@ -5,7 +5,6 @@ import { DescriptionIcon, CardIcon, PriorityIcon } from "../../icons";
 import PrioritySelect from "./PrioritySelect";
 import { DeadLineIcon } from "../../icons";
 import DatePicker from "./DatePicker";
-import TaskItem from "../../TaskItem";
 
 
 const EditTaskModal = ({
@@ -40,6 +39,20 @@ const EditTaskModal = ({
     }
   }
 
+  const handleNoneTitle = e => {
+    if (!e.target.value) {
+      setFormInput({
+        ...formInput,
+        title: formInput.prevTitle
+      })
+    } else {
+      setFormInput({
+        ...formInput,
+        prevTitle: formInput.title
+      })
+    }
+  }
+
   const handleSelect = e => {
     if (e && e.value) {
       setFormInput({
@@ -49,9 +62,9 @@ const EditTaskModal = ({
     }
   }
 
-  console.log(formInput)
 
   const handleDeadline = e => {
+    setHoverButton(false);
     const splitedDate = e.toLocaleDateString().split('/');
     const date = `${splitedDate[2]}-${splitedDate[1]}-${splitedDate[0]}`
     setFormInput({
@@ -89,6 +102,7 @@ const EditTaskModal = ({
                       className="max-h-32 pb-0.5 w-full text-lg font-bold resize-none overflow-y-hidden flex flex-col flex-grow p-0 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-sm border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600 px-0 focus:px-3"
                       value={ formInput.title }
                       onChange={ handleTextAreas }
+                      onBlur={ handleNoneTitle }
                     >
                       { formInput.title }
                     </textarea>
@@ -132,7 +146,7 @@ const EditTaskModal = ({
                         placeholder="Saisir une description..."
                         ref={ descriptionRef }
                         className={`${formInput.description ? "bg-transparent hover:cursor-pointer px-0 focus:px-2.5 -mb-8 focus:mb-0 -mt-2 focus:mt-0" : " bg-slate-800" } w-full text-zinc-50 text-opacity-90 text-sm resize-none overflow-y-hidden flex flex-col flex-grow rounded-md border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600 pb-8`}
-                        value={ formInput.description }
+                        value={ formInput.description ? formInput.description : ''}
                         onChange={ handleTextAreas }
                   >
                     { formInput.description }

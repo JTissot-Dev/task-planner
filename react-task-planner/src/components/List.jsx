@@ -106,7 +106,7 @@ const List = ({list, setErrorNotification, setLists}) => {
   const dropDownListMenu = dropDownMenu &&
     (
     <ul 
-      className="bg-slate-950 bg-opacity-100 w-full border-y border-zinc-50 border-opacity-50"
+      className="bg-slate-950 bg-opacity-50 backdrop-blur w-full border-y border-zinc-50 border-opacity-50"
       ref = { clickOutside }
     >
       <li className="w-full">
@@ -114,7 +114,7 @@ const List = ({list, setErrorNotification, setLists}) => {
           className="flex w-full p-3 items-center justify-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200"
           onClick={() => setDeleteListModal(true) }
         >
-          <DeleteIcon />
+          <DeleteIcon style="w-4 h-4"/>
           <p className="ms-2 text-sm">Supprimer la liste</p>
         </button>
       </li>
@@ -153,7 +153,13 @@ const List = ({list, setErrorNotification, setLists}) => {
           {
             tasks &&
             tasks.map(task => {
-              return <TaskItem key={ task.id } task= {task} setErrorNotification={ setErrorNotification }/>
+              return <TaskItem 
+                        key={ task.id } 
+                        task={ task }
+                        tasks={ tasks }
+                        setTasks={ setTasks }
+                        setErrorNotification={ setErrorNotification }
+                      />
             })
           }
           <AddTaskItem 

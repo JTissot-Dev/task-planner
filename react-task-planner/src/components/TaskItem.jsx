@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { EditIcon } from "./icons";
 import EditTaskModal from "./modals/editTaskModal/EditTaskModal";
+import DeleteTaskModal from "./modals/DeleteTaskModal";
 import ErrorAlert from "./alerts/ErrorAlert";
 import axiosClient from "../axios-client";
+import { DeleteIcon } from "./icons";
 
 
-const TaskItem = ({task, setErrorNotification}) => {
+const TaskItem = ({task, tasks, setTasks, setErrorNotification}) => {
 
   const [taskItem, setTaskItem] = useState({
     id: null,
@@ -27,6 +29,8 @@ const TaskItem = ({task, setErrorNotification}) => {
   const [hoverButton, setHoverButton] = useState(false);
   const [editTaskModal, setEditTaskModal] = useState(false);
   const [submitUpdate, setSubmitUpdate] = useState(false); 
+  const [deleteTaskModal, setDeleteTaskModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     setTaskItem({
@@ -41,6 +45,7 @@ const TaskItem = ({task, setErrorNotification}) => {
 
     setFormInput({
       title: task.title,
+      prevTitle: task.title,
       description: task.description,
       priority: task.priority,
       deadline: task.deadline
@@ -53,6 +58,11 @@ const TaskItem = ({task, setErrorNotification}) => {
     }
   }, [submitUpdate])
 
+  const toggleHoverButton = () => {
+    if (!editTaskModal) {
+      setHoverButton(prev => !prev);
+    }
+  }
 
   const updateTask = () => {
     const payload = {
@@ -75,24 +85,54 @@ const TaskItem = ({task, setErrorNotification}) => {
     })
   }
 
+  const deleteTask = () => {
+    setDeleteLoading(true);
+    axiosClient.delete(`/task/${taskItem.id}`)
+    .then(() => {
+      setTasks(prev => prev.filter(prevTask => prevTask.id != taskItem.id))
+      setTasks(prev => prev.map(prevTask => {
+          return {
+            ...prevTask,
+            position: prevTask.position > taskItem.position ? prevTask.position -1 : prevTask.position
+          }
+      }));
+      setDeleteLoading(false);
+      setDeleteTaskModal(false);
+    })
+    .catch(() => {
+      setDeleteLoading(false);
+      setDeleteTaskModal(false);
+      const message = 'Erreur lors de la suppression';
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
+    })
+  }
+
 
   return (
     <div
-      className="relative my-2 p-5 w-full flex justify-start text-sm bg-slate-800 bg-opacity-50 rounded-md shadow-md shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200"
-      onMouseEnter={ () => setHoverButton(true) }
-      onMouseLeave={ () => setHoverButton(false) }
+      className="relative my-2 px-5 py-6 w-full flex justify-start text-sm bg-slate-800 bg-opacity-50 rounded-md shadow-md shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200"
+      onMouseEnter={ toggleHoverButton }
+      onMouseLeave={ toggleHoverButton }
     > 
         <h4 className="w-44 break-words whitespace-pre-line">
           { taskItem.title ? taskItem.title : task.title}
         </h4>
       {
       hoverButton &&
+      <div className="z-50 absolute top-1 end-1">
         <button
-          className="p-3 z-50 absolute top-1 end-1 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-full"
+          className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
           onClick={ () => setEditTaskModal(true) }
         >
           <EditIcon />
-        </button> 
+        </button>
+        <button
+          className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+          onClick={ () => setDeleteTaskModal(true) }
+        >
+          <DeleteIcon style="w-3.5 h-3.5"/>
+        </button>
+      </div>
       }
 
       { 
@@ -102,6 +142,16 @@ const TaskItem = ({task, setErrorNotification}) => {
           setEditTaskModal={setEditTaskModal}
           formInput={ formInput }
           setFormInput={ setFormInput }
+          setHoverButton={ setHoverButton }
+        />
+      }
+    
+      {
+        deleteTaskModal &&
+        <DeleteTaskModal 
+          loading={ deleteLoading }
+          deleteTask={ deleteTask }
+          setDeleteTaskModal={ setDeleteTaskModal }
           setHoverButton={ setHoverButton }
         />
       }

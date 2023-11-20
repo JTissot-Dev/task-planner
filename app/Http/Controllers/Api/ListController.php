@@ -95,8 +95,15 @@ class ListController extends Controller
      */
     public function destroy(ListT $list)
     {
-        $list->delete();
-
-        return response('', 204);
+        {   
+            try {
+                $list->delete();
+                return response('', 204);
+            } catch (QueryException $e) {
+                return response()->json([
+                    'message' => 'Une erreur est survenue lors de la suppression de la tâche'
+                ], 500);
+            }
+        }
     }
 }

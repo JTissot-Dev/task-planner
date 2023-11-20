@@ -126,7 +126,7 @@ const Project = () => {
           className="flex p-2 items-center justify-center hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 w-full sm:w-fit"
           onClick={() => setDeleteProjectModal(true) }
         >
-          <DeleteIcon />
+          <DeleteIcon style="w-4 h-4"/>
           <p className="ms-2 text-sm">Supprimer le projet</p>
         </button>
       </li>

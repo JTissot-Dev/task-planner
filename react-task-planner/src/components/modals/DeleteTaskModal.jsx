@@ -1,24 +1,21 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "flowbite-react";
 import { CloseIcon } from "../icons";
-import { useStateContext } from "../../context/ContextProvider";
 import DefaultSpinner from "../Spinners/DefaultSpinner";
 import useOutsideClick from "../../useOutsideClick";
 
 
-const CreateProjectModal = () => {
+const DeleteTaskModal = ({loading, deleteTask, setDeleteTaskModal, setHoverButton}) => {
   
-  const {loading, setCreateProjectModal, createProject} = useStateContext(); 
-  const projectName = useRef();
-  const clickOutside = useOutsideClick(() => setCreateProjectModal(prev => !prev));
-
   useEffect(() => {
-    projectName.current.focus();
+    setHoverButton(false);
   }, []);
+
+  const clickOutside = useOutsideClick(() => setDeleteTaskModal(prev => !prev));
 
   const handleSubmit = e => {
     e.preventDefault();
-    createProject(projectName.current.value);
+    deleteTask();
   }
 
   const defaultSpinner = loading && <DefaultSpinner />;
@@ -40,45 +37,33 @@ const CreateProjectModal = () => {
               </div>
               <div className="flex items-center justify-between p-5 rounded-t">
                   <h3 className="text-md font-medium text-zinc-50 text-opacity-90">
-                      Nouveau projet
+                      Supprimer une tâche
                   </h3>
                   <button 
                     type="button" 
                     className="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center hover:bg-zinc-50" 
-                    onClick={() => setCreateProjectModal(false)}>
+                    onClick={() => setDeleteTaskModal(false)}>
                       <CloseIcon />
                       <span className="sr-only">Close modal</span>
                   </button>
               </div>
               
-              <div className="p-6 pt-4 space-y-2">
-                <label 
-                htmlFor="project-name" 
-                className="block text-sm font-light text-zinc-50 text-opacity-90"
-                >
-                  Nom du projet
-                  </label>
-                <input 
-                type="text" 
-                id="project-name" 
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2" 
-                ref={ projectName }
-                required>
-                </input>
+              <div className="p-6 border-y border-zinc-50 border-opacity-50 pt-4 space-y-2">
+                <p>Souhaitez-vous vraiment supprimer la tâche?</p>
               </div>
               
-              <div className="flex items-center justify-end p-6 rounded-b dark:border-gray-600">
+              <div className="flex items-center justify-end py-4 px-6 rounded-b dark:border-gray-600">
                   <Button
                     type="submit"
                     className="w-24 me-4"
                     gradientDuoTone="purpleToBlue"
                   >
-                      Valider
+                      Confirmer
                 </Button>
                   <button 
                     type="button" 
                     className="w-24 bg-slate-950 border border-zinc-50 border-opacity-50 text-zinc-50 text-opacity-90 hover:bg-slate-900 font-medium rounded-lg text-sm px-5 py-2.5"
-                    onClick={() => setCreateProjectModal(false)}
+                    onClick={() => setDeleteTaskModal(false)}
                   >
                     Annuler
                   </button>
@@ -90,4 +75,4 @@ const CreateProjectModal = () => {
   )
 }
 
-export default CreateProjectModal;
+export default DeleteTaskModal;

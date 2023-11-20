@@ -70,7 +70,7 @@ const AddTaskItem = ({
       ) :
       (
       <button
-        className="px-4 py-5 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-slate-800 bg-opacity-50 hover:bg-purple-800 hover:bg-opacity-50 rounded-lg"
+        className="px-4 py-6 w-full flex items-center text-sm transition duration-200 hover:ease-in-out bg-slate-800 bg-opacity-50 hover:bg-purple-800 hover:bg-opacity-50 rounded-lg"
         onClick={() => setAddTask(true) }
       >
         <AddProjectIcon style="text-zinc-50 text-opacity-90 w-3 h-3 me-2"/>
