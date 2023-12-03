@@ -28,7 +28,7 @@ const AddListItem = ({
     const payload = {
       title: inputTitle.current.value,
       projectId: projectId,
-      position: lists.length + 1
+      position: lists.length
     };
     axiosClient.post('/list', payload)
     .then(({data}) => {

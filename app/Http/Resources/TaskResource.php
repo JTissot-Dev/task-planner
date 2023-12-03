@@ -21,7 +21,7 @@ class TaskResource extends JsonResource
             'deadline' => $this->deadline,
             'priority' => $this->priority,
             'position' => $this->position,
-            'listId' => $this->list_id
+            'list_id' => $this->list_id
         ];
     }
 }

@@ -25,4 +25,15 @@ class Project extends Model
     {
         return $this->hasMany(ListT::class);
     }
+
+    public function orderLists($orderedLists): void
+    {
+        foreach ($orderedLists as $orderedList) {
+            $list = $this->lists()->find($orderedList['id']);
+    
+            if ($list) {
+                $list->update(['position' => $orderedList['position']]);
+            }
+        }
+    }
 }

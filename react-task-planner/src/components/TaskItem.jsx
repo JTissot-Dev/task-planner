@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 import { EditIcon } from "./icons";
 import EditTaskModal from "./modals/editTaskModal/EditTaskModal";
 import DeleteTaskModal from "./modals/DeleteTaskModal";
@@ -9,22 +11,44 @@ import { DeadLineIcon } from "./icons";
 
 
 const TaskItem = ({task, setTasks, setErrorNotification}) => {
+  
 
   const [taskItem, setTaskItem] = useState({
-    id: null,
-    title: '',
-    description: '',
-    deadline: '',
-    position: null,
-    priority: '',
-    listId: null
+    id: task.id,
+    title: task.title,
+    description: task.description,
+    deadline: task.deadline,
+    position: task.position,
+    priority: task.priority,
+    listId: task.list_id
   });
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({
+    id: taskItem.id,
+    data: {
+      type: "task",
+      task: taskItem
+    }
+  });
+
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const [formInput, setFormInput] = useState({
-    title: '',
-    description: '',
-    priority: '',
-    deadline: ''
+    title: task.title,
+    description: task.description,
+    priority: task.priority,
+    deadline: task.deadline
   });
 
   const [hoverButton, setHoverButton] = useState(false);
@@ -32,26 +56,6 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
   const [submitUpdate, setSubmitUpdate] = useState(false); 
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-
-  useEffect(() => {
-    setTaskItem({
-      id: task.id,
-      title: task.title,
-      description: task.description,
-      deadline: task.deadline,
-      position: task.position,
-      priority: task.priority,
-      listId: task.listId
-    });
-
-    setFormInput({
-      title: task.title,
-      prevTitle: task.title,
-      description: task.description,
-      priority: task.priority,
-      deadline: task.deadline
-    })
-  }, [])
 
   useEffect(() => {
     if (submitUpdate) {
@@ -68,13 +72,13 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
   const getPriorityStyle = () => {
     switch (taskItem.priority) {
       case 'Basse':
-        return 'border-green-600 border-t-2 border-opacity-70';
+        return `${!isDragging ? 'border-green-600 border-t-2 border-opacity-70' : ''}`;
       case 'Moyenne':
-        return 'border-yellow-600 border-t-2 border-opacity-70';
+        return `${!isDragging ? 'border-yellow-600 border-t-2 border-opacity-70' : ''}`;
       case 'Haute':
-        return 'border-red-600 border-t-2 border-opacity-60';
+        return `${!isDragging ? 'border-red-600 border-t-2 border-opacity-60' : ''}`;
       default:
-        return 'border-slate-800 border-t-2 border-opacity-0';
+        return '';
     }
   }
 
@@ -95,6 +99,18 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
     axiosClient.put(`/task/${taskItem.id}`, payload)
     .then(({data}) => {
       setTaskItem(data.data);
+      setTasks(prev => prev.map(prevTask => {
+        if (prevTask.id === taskItem.id) {
+          return {
+            ...prevTask,
+            title: data.data.title,
+            description: data.data.description,
+            deadline: data.data.deadline,
+            priority: data.data.priority
+          }
+        } else
+        return prevTask;
+      }))
       setSubmitUpdate(false);
     })
     .catch(() => {
@@ -126,60 +142,69 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
     })
   }
 
-
   return (
     <div
-      className={`${getPriorityStyle()} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm bg-slate-800 bg-opacity-50 rounded-md shadow-md shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200`}
+      className={
+                 `${getPriorityStyle()} 
+                  ${isDragging ? 'border-2 border-purple-600 border-opacity-50' : 'shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200 bg-slate-800 bg-opacity-50 shadow-md'} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm rounded-md`
+                }
       onMouseEnter={ toggleHoverButton }
       onMouseLeave={ toggleHoverButton }
+      ref={setNodeRef} 
+      style={style} 
+      {...attributes} {...listeners}
     > 
+      <div
+        className={`${isDragging && 'opacity-0'}`}
+      >
         <h4 className="w-44 break-words whitespace-pre-line">
           { taskItem.title ? taskItem.title : task.title}
         </h4>
-      {
-      hoverButton &&
-        <div className="z-50 absolute top-1 end-1">
-          <button
-            className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-            onClick={ () => setEditTaskModal(true) }
-          >
-            <EditIcon />
-          </button>
-          <button
-            className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-            onClick={ () => setDeleteTaskModal(true) }
-          >
-            <DeleteIcon style="w-3 h-3"/>
-          </button>
-        </div>
-      }
-      {
-        taskItem.deadline &&
-          <div className="z-40 text-xs font-extralight flex items-center absolute bottom-3 end-4">
-            <DeadLineIcon style="w-3 h-3 me-1.5" />
-            { getDeadLineLabel() }
+        {
+        hoverButton &&
+          <div className="z-30 absolute top-1 end-1">
+            <button
+              className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+              onClick={ () => setEditTaskModal(true) }
+            >
+              <EditIcon />
+            </button>
+            <button
+              className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+              onClick={ () => setDeleteTaskModal(true) }
+            >
+              <DeleteIcon style="w-3 h-3"/>
+            </button>
           </div>
-      }
-      { 
-      editTaskModal &&  
-        <EditTaskModal 
-          setSubmitUpdate={ setSubmitUpdate } 
-          setEditTaskModal={setEditTaskModal}
-          formInput={ formInput }
-          setFormInput={ setFormInput }
-          setHoverButton={ setHoverButton }
-        />
-      }
-    
-      {
-        deleteTaskModal &&
-        <DeleteTaskModal 
-          loading={ deleteLoading }
-          deleteTask={ deleteTask }
-          setDeleteTaskModal={ setDeleteTaskModal }
-          setHoverButton={ setHoverButton }
-        />
-      }
+        }
+        {
+          taskItem.deadline &&
+            <div className="z-20 text-xs font-extralight flex items-center absolute bottom-3 end-4">
+              <DeadLineIcon style="w-3 h-3 me-1.5" />
+              { getDeadLineLabel() }
+            </div>
+        }
+      </div>
+        { 
+        editTaskModal &&  
+          <EditTaskModal 
+            setSubmitUpdate={ setSubmitUpdate } 
+            setEditTaskModal={setEditTaskModal}
+            formInput={ formInput }
+            setFormInput={ setFormInput }
+            setHoverButton={ setHoverButton }
+          />
+        }
+      
+        {
+          deleteTaskModal &&
+          <DeleteTaskModal 
+            loading={ deleteLoading }
+            deleteTask={ deleteTask }
+            setDeleteTaskModal={ setDeleteTaskModal }
+            setHoverButton={ setHoverButton }
+          />
+        }
     </div>
   )
 }

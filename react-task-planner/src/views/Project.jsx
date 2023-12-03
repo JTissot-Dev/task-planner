@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import axiosClient from "../axios-client";
 import { useStateContext } from "../context/ContextProvider";
-import List from "../components/List";
+import ListDndContext from "../components/dndContexts/ListDndContext";
 import LargeSpinner from "../components/Spinners/LargeSpinner";
 import { BurgerMenuProjectIcon } from "../components/icons";
 import { DeleteIcon } from "../components/icons";
@@ -23,6 +23,7 @@ const Project = () => {
     setCurrentProject} = useStateContext();
 
   const [lists, setLists] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [project, setProject] = useState({});
@@ -33,7 +34,7 @@ const Project = () => {
   const [addList, setAddList] = useState(false);
   const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev))
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     getProject()
     getLists();
@@ -55,7 +56,14 @@ const Project = () => {
     setLoading(true);
       axiosClient.get(`/list?project-id=${projectId}`)
         .then(({data}) => {
-          setLists(data.data);
+
+          const lists = data.data
+          setLists(lists);
+          
+          const listsTasks = lists.map(list => list.tasks);
+          const tasks = listsTasks.flat();
+          setTasks(tasks);
+
           setLoading(false);
         })
         .catch(() => {
@@ -136,7 +144,7 @@ const Project = () => {
 
   return (
     <div 
-      className={`h-screen pb-5 relative text-zinc-50 text-opacity-90 flex flex-col min-w-full mx-3 ${ sideBar ? "px-5" : "px-5 sm:px-20" }`}
+      className={`h-screen pb-5 relative text-zinc-50 text-opacity-90 flex flex-col min-w-full mx-3 ${ sideBar ? "px-5" : "px-5 sm:px-10 lg:px-20" }`}
     >
       <div className="absolute z-50 top-64 start-1/2">
         { spinner }
@@ -162,22 +170,20 @@ const Project = () => {
           { dropDownProjectMenu }
         </div>
       </div>
-      <div className="h-10">
+      <div className="h-6">
           { errorNotification }
       </div>
       <div 
-        className="flex h-screen pt-1 pb-8 overflow-y-hidden overflow-x-auto scrollbar scrollbar-track-zinc-200 scrollbar-thumb-zinc-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
-        { 
-          lists &&
-          lists.map(list => {
-            return <List 
-                      key={ list.id } 
-                      list={ list }
-                      setLists={ setLists } 
-                      setErrorNotification={ setErrorNotification } 
-                    />
-          })
-        }
+        className="flex h-screen pt-4 pb-8 overflow-y-hidden overflow-x-auto scrollbar scrollbar-track-zinc-200 scrollbar-thumb-zinc-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
+      >
+        <ListDndContext
+          projectId={ projectId }
+          lists={ lists }
+          setLists={ setLists }
+          tasks={ tasks }
+          setTasks={ setTasks }
+          setErrorNotification={ setDropDownMenu }
+        />
         {
           !loading && 
             <AddListItem 

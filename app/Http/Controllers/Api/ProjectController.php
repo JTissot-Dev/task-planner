@@ -67,11 +67,22 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateProjectRequest $request, Project $project)
-    {
-        $data = $request->validated();
-        $project->name = $data['name'];
-        $project->save();
-        return new ProjectResource($project);
+    {   
+        try {
+            $data = $request->validated();
+
+            if (isset($data['name'])) {
+                $project->name = $data['name'];
+                $project->save();
+            } else if (isset($data['lists'])) {
+                $project->orderLists($data['lists']);
+            }
+            return new ProjectResource($project);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la suppression de la tâche'
+            ], 500);
+        }
     }
 
     /**

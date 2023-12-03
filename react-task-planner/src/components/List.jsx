@@ -1,26 +1,53 @@
 import { useState, useEffect, useRef } from "react";
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 import axiosClient from "../axios-client";
-import { AddProjectIcon } from "./icons";
-import { ExpandListIcon } from "./icons";
-import TaskItem from "./TaskItem";
+import { ExpandListIcon, MoveListIcon } from "./icons";
 import ErrorAlert from "./alerts/ErrorAlert";
 import { DeleteIcon } from "./icons";
 import useOutsideClick from "../useOutsideClick";
 import DeleteListModal from "./modals/DeleteListModal";
 import AddTaskItem from "./AddTaskItem";
+import TaskDndContext from "./dndContexts/taskDndContext";
 
 
-const List = ({list, setErrorNotification, setLists}) => {
-  
+const List = ({
+  list, 
+  setErrorNotification, 
+  lists, 
+  setLists,
+  tasks,
+  setTasks,
+}) => {
+
   const [listItem, setListItem] = useState({
-    id: null,
-    title: '',
-    prevTitle: '',
-    position: null,
-    projectId: null
+    id: list.id,
+    title: list.title,
+    prevTitle: list.title,
+    position: list.position,
+    projectId: list.projectId,
   });
 
-  const [tasks, setTasks] = useState([]);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({
+    id: listItem.id,
+    data: {
+      type: 'list',
+      list: listItem
+    }
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const [dropDownMenu, setDropDownMenu] = useState(false);
   const [deleteListModal, setDeleteListModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,18 +55,6 @@ const List = ({list, setErrorNotification, setLists}) => {
 
   const titleRef = useRef();
   const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev));
-
-  useEffect(() => {
-    setListItem({
-      id: list.id,
-      title: list.title,
-      prevTitle: list.title,
-      position: list.position,
-      projectId: list.projectId
-    });
-
-    setTasks(list.tasks);
-  }, [list.projectId])
 
   useEffect(() => {
     titleRef.current.height = 'auto';
@@ -55,7 +70,7 @@ const List = ({list, setErrorNotification, setLists}) => {
     });
   }
 
-  const updateList = e => {
+  const updateList = () => {
     if (listItem.title) {
       const payload = {
         title: listItem.title
@@ -84,6 +99,7 @@ const List = ({list, setErrorNotification, setLists}) => {
     setLoading(true);
     axiosClient.delete(`/list/${list.id}`)
     .then(() => {
+      setTasks(prev => prev.filter(prevTask => prevTask.list_id !== list.id));
       setLists(prev => prev.filter(prevList => prevList.id != list.id))
       setLists(prev => prev.map(prevList => {
           return {
@@ -101,7 +117,6 @@ const List = ({list, setErrorNotification, setLists}) => {
       setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
     })
   }
-
 
   const dropDownListMenu = dropDownMenu &&
     (
@@ -121,18 +136,33 @@ const List = ({list, setErrorNotification, setLists}) => {
     </ul>
     )
 
+
   return (
-    <div className="h-full">
-      <div className="relative max-h-full flex flex-col justify-between grow-0 shrink-0 w-80 mb-10 me-8 rounded-xl border border-zinc-50 border-opacity-50">
-        <div className="absolute w-full top-14 z-50">
+    <div 
+      className="h-full relative"
+      ref={setNodeRef} 
+      style={style} 
+    >
+      <button
+        className={`${isDragging ? 'hidden' : 'absolute z-30 px-2 py-1 -top-3.5 start-36 bg-slate-950 hover:bg-slate-900 hover:ease-in-out transition duration-200 rounded-full'} `}
+        {...attributes} {...listeners}
+        >
+          <MoveListIcon />
+      </button>
+      <div 
+        className={`${isDragging ? 'border-2 border-purple-600' : 'border border-zinc-50'} relative max-h-full flex flex-col justify-between grow-0 shrink-0 w-80 me-8 rounded-xl border-opacity-50`}
+      >      
+        <div className="absolute w-full top-14 z-40">
           { dropDownListMenu }
         </div>
-        <div className="flex w-full pt-3 pb-1 px-3 justify-between items-start rounded-t-md">
+        <div 
+          className={`${isDragging && 'opacity-0'} flex w-full pt-5 pb-1 px-3 justify-between items-start rounded-t-md`}
+        >
           <h2 className="w-full me-5">
             <textarea
               rows="1"
               ref={ titleRef }
-              className="max-h-32 w-full resize-none overflow-y-hidden flex flex-col flex-grow ms-2 p-1 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-md border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
+              className="max-h-32 w-full resize-none overflow-y-hidden flex flex-col flex-grow ms-2 py-1 px-0 focus:px-2 bg-transparent hover:cursor-pointer rounded-md border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
               value={ listItem.title }
               onChange={ handleTitle }
               onBlur={ updateList }
@@ -144,23 +174,17 @@ const List = ({list, setErrorNotification, setLists}) => {
             className="p-2 hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-full"
             onClick={ () => setDropDownMenu(true) }
           >
-            <ExpandListIcon />
+            <ExpandListIcon style="text-zinc-50 text-opacity-90"/>
           </button>
         </div>
         <div 
-          className="flex flex-col h-full overflow-y-auto scrollbar-thin scrollbar-track-zinc-400 scrollbar-thumb-slate-800 my-2 mx-1 px-3 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
+          className={`${isDragging && 'opacity-0'} flex flex-col h-full overflow-y-auto scrollbar-thin scrollbar-track-zinc-400 scrollbar-thumb-slate-800 my-2 mx-1 px-3 scrollbar-thumb-rounded-full scrollbar-track-rounded-full`} 
         >
-          {
-            tasks &&
-            tasks.map(task => {
-              return <TaskItem 
-                        key={ task.id } 
-                        task={ task }
-                        setTasks={ setTasks }
-                        setErrorNotification={ setErrorNotification }
-                      />
-            })
-          }
+          <TaskDndContext 
+            listId={ listItem.id }
+            tasks={ tasks }
+            setTasks={ setTasks }
+          />
           <AddTaskItem 
             addTask={ addTask }
             setAddTask={ setAddTask }
@@ -169,12 +193,11 @@ const List = ({list, setErrorNotification, setLists}) => {
             setTasks={ setTasks }
           />
         </div>
-      </div>
-
+      </div> 
       { deleteListModal && <DeleteListModal loading={ loading } setDeleteListModal={ setDeleteListModal } deleteList={ deleteList }/> }
     </div>
 
-  )
+  );
 }
 
 export default List;
