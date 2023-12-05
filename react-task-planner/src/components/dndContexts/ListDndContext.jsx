@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
   DndContext,
@@ -34,7 +34,6 @@ const listDndContext = ({
   const listsId = useMemo(() =>  lists.map(list => list.id), [lists]);
   const [activeList, setActiveList] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
-  // console.log(tasks)
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -47,6 +46,7 @@ const listDndContext = ({
   );
 
   const [swapLists, setSwapLists] = useState(false);
+  const [swapTasks, setSwapTasks] = useState(false);
 
   const updateListOrder = () => {
     const orderedLists = lists.map(list => {
@@ -70,9 +70,32 @@ const listDndContext = ({
     })
   }
 
-  if (swapLists) {
-    updateListOrder();
+  const updateTasksOrder = () => {
+    setSwapTasks(false);
+    const orderedTasks = tasks.map(task => {
+      return {
+        ...task,
+        position: tasks.indexOf(task)
+      }
+    });
+
+    const payload = {
+      tasks: orderedTasks
+    }
+
+    axiosClient.put(`/project/${projectId}`, payload)
+    .then(() => {
+      console.log(orderedTasks)
+    })
+    .catch(() => {
+      setSwapTasks(false);
+      const message = 'Erreur lors de la mise à jour';
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
+    })
   }
+
+  if (swapLists) updateListOrder();
+  if (swapTasks) updateTasksOrder(); 
 
   return (
     <DndContext 
@@ -113,6 +136,7 @@ const listDndContext = ({
                   return task.list_id === activeList.id
                 }) }
                 id={activeList.id}
+                overlayStyle="opacity-50"
               />
             )}
             {activeTask && <TaskItem task={activeTask} />}
@@ -127,9 +151,11 @@ const listDndContext = ({
     if (event.active.data.current.type === 'list') {
       setActiveList(event.active.data.current.list);
       return;
-    } else if (event.active.data.current.type === 'task') {
-        setActiveTask(event.active.data.current.task);
-        return;
+    }  
+    
+    if (event.active.data.current.type === 'task') {
+      setActiveTask(event.active.data.current.task);
+      return;
     }
   }
   
@@ -145,10 +171,15 @@ const listDndContext = ({
         setLists((lists) => {
           const oldIndex = lists.findIndex(list => list.id === active.id);
           const newIndex = lists.findIndex(list => list.id === over.id);
-          console.log(oldIndex)
           return arrayMove(lists, oldIndex, newIndex);
         });
-      } 
+      }
+      return; 
+    }
+
+    if (event.active.data.current.type === 'task') {
+      setSwapTasks(true);
+      return;
     }
   }
 
@@ -180,7 +211,6 @@ const listDndContext = ({
     const isOverList = over.data.current.type === 'list';
     if (isActiveTask && isOverList) {
       setTasks((tasks) => {
-        
         const oldIndex = tasks.findIndex(task => task.id === active.id);
         tasks[oldIndex].list_id = over.id;
         return arrayMove(tasks, oldIndex, oldIndex);

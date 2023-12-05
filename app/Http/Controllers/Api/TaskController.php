@@ -4,19 +4,35 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\ListT;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            $projectId = $request->input('project-id');
+            $tasks = ListT::with('tasks')
+                            ->where('project_id', $projectId)
+                            ->get()
+                            ->pluck('tasks')
+                            ->flatten()
+                            ->sortBy('position');
+                            
+            return TaskResource::collection($tasks);            
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la récupération des tâches'
+            ], 500);
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../context/ContextProvider";
 import MotionGuestForms from "../components/MotionGuestForms";
+import DefaultSpinner from "../components/Spinners/DefaultSpinner";
 
 
 const Signup = () => {
@@ -26,6 +27,7 @@ const Signup = () => {
   })
 
   const [signupError, setSignupError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const {setUser, setToken} = useStateContext();
 
@@ -66,6 +68,7 @@ const Signup = () => {
   }
   
   const signupSubmit = e => {
+    setLoading(true);
     e.preventDefault();
     const payload = {
       firstName: formInputValue.firstName,
@@ -78,8 +81,10 @@ const Signup = () => {
       .then(({data}) => {
         setUser(data);
         setToken(data.token);
+        setLoading(false);
       })
       .catch(error => {
+        setLoading(false);
         const response = error.response;
         if (response && response.status === 422) {
           if (response.data.errors.email) {
@@ -92,9 +97,16 @@ const Signup = () => {
   return (
     <MotionGuestForms>
       <form 
-        className="flex w-full py-4 px-8 flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 shadow-md"
+        className="relative flex w-full py-4 px-8 flex-col gap-4 border-4 border-opacity-50 rounded-2xl border-b-violet-600 border-r-violet-600 border-l-cyan-400 border-t-cyan-400 bg-gray-700 bg-opacity-40 shadow-md"
         onSubmit={ signupSubmit }
       >
+        <div
+          className="flex absolute top-5 start-1/2 me-2 justify-center"
+        >
+          {
+            loading && <DefaultSpinner />
+          }
+        </div>
         <legend className="text-2xl text-zinc-50">
           Inscription
         </legend>

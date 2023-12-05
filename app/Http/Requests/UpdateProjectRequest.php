@@ -23,7 +23,8 @@ class UpdateProjectRequest extends FormRequest
     {
         return [
             'name' => 'string|max:50',
-            'lists' => 'array'
+            'lists' => 'array',
+            'tasks' => 'array'
         ];
     }
 }

@@ -29,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/project/:projectId',
         element: <Project />
+      },
+      {
+        path: '*',
+        element: <NotFound />
       }
     ]
   },

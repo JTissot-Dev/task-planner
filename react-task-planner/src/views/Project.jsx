@@ -11,6 +11,7 @@ import ErrorAlert from "../components/alerts/ErrorAlert";
 import DeleteProjectModal from "../components/modals/DeleteProjectModal";
 import AddListItem from "../components/AddListItem";
 
+
 const Project = () => {
 
   let { projectId } = useParams();
@@ -35,10 +36,13 @@ const Project = () => {
   const clickOutside = useOutsideClick(() => setDropDownMenu(prev => !prev))
   const navigate = useNavigate();
   
+
   useEffect(() => {
-    getProject()
+    getProject();
+    getTasks();    
     getLists();
   }, [projectId]);
+
 
   const getProject = () => {
     axiosClient.get(`/project/${projectId}`)
@@ -46,24 +50,33 @@ const Project = () => {
         setProject(data.data);
         setProjectName(data.data.name);
       })
-      .catch(() => {
+      .catch(({response}) => {
         setLoading(false);
+
+        if (response.status === 404) {
+          return navigate('*');
+        }
+
         setConnectionError(prev => !prev);
       })
     }
+  
+  const getTasks = () => {
+    setLoading(true);
+    axiosClient.get(`/task?project-id=${projectId}`)
+    .then(({data}) => {
+      setTasks(data.data);
+    })
+    .catch(() => {
+      setLoading(false);
+      setConnectionError(prev => !prev);
+    })
+  }
 
   const getLists = () => {
-    setLoading(true);
       axiosClient.get(`/list?project-id=${projectId}`)
         .then(({data}) => {
-
-          const lists = data.data
-          setLists(lists);
-          
-          const listsTasks = lists.map(list => list.tasks);
-          const tasks = listsTasks.flat();
-          setTasks(tasks);
-
+          setLists(data.data);
           setLoading(false);
         })
         .catch(() => {
@@ -153,7 +166,7 @@ const Project = () => {
         <h1 className="h-full">
           <input
             type="text"
-            className="h-full w-52 sm:w-80 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-lg py-0 border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
+            className="h-full w-52 sm:w-80 bg-transparent hover:cursor-pointer hover:bg-slate-800 hover:bg-opacity-50 hover:ease-in-out transition duration-200 rounded-lg py-0 border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-800 focus:border-purple-800"
             value={ projectName }
             onChange={ handleProjectName }
             onBlur={ updateProject }
@@ -173,6 +186,8 @@ const Project = () => {
       <div className="h-6">
           { errorNotification }
       </div>
+      {
+        !loading && 
       <div 
         className="flex h-screen pt-4 pb-8 overflow-y-hidden overflow-x-auto scrollbar scrollbar-track-zinc-200 scrollbar-thumb-zinc-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
       >
@@ -184,18 +199,17 @@ const Project = () => {
           setTasks={ setTasks }
           setErrorNotification={ setDropDownMenu }
         />
-        {
-          !loading && 
-            <AddListItem 
-              addList={ addList } 
-              setAddList={ setAddList } 
-              projectId={ project.id }
-              lists={ lists } 
-              setLists={ setLists }
-              setErrorNotification={ setErrorNotification }
-            />
-        }
+        
+        <AddListItem 
+          addList={ addList } 
+          setAddList={ setAddList } 
+          projectId={ project.id }
+          lists={ lists } 
+          setLists={ setLists }
+          setErrorNotification={ setErrorNotification }
+        />
       </div>
+      }
 
       {
         deleteProjectModal && 

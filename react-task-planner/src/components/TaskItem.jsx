@@ -72,13 +72,13 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
   const getPriorityStyle = () => {
     switch (taskItem.priority) {
       case 'Basse':
-        return `${!isDragging ? 'border-green-600 border-t-2 border-opacity-70' : ''}`;
+        return 'bg-green-600 bg-opacity-70'
       case 'Moyenne':
-        return `${!isDragging ? 'border-yellow-600 border-t-2 border-opacity-70' : ''}`;
+        return 'bg-yellow-600 bg-opacity-70'
       case 'Haute':
-        return `${!isDragging ? 'border-red-600 border-t-2 border-opacity-60' : ''}`;
+        return ' bg-red-600 bg-opacity-60'
       default:
-        return '';
+        return ''
     }
   }
 
@@ -143,49 +143,58 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
   }
 
   return (
-    <div
-      className={
-                 `${getPriorityStyle()} 
-                  ${isDragging ? 'border-2 border-purple-600 border-opacity-50' : 'shadow-slate-950 hover:bg-slate-800 hover:bg-opacity-60 hover:ease-in-out transition duration-200 bg-slate-800 bg-opacity-50 shadow-md'} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm rounded-md`
-                }
-      onMouseEnter={ toggleHoverButton }
-      onMouseLeave={ toggleHoverButton }
-      ref={setNodeRef} 
-      style={style} 
-      {...attributes} {...listeners}
-    > 
+    <>
       <div
-        className={`${isDragging && 'opacity-0'}`}
-      >
-        <h4 className="w-44 break-words whitespace-pre-line">
-          { taskItem.title ? taskItem.title : task.title}
-        </h4>
-        {
-        hoverButton &&
-          <div className="z-30 absolute top-1 end-1">
-            <button
-              className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-              onClick={ () => setEditTaskModal(true) }
-            >
-              <EditIcon />
-            </button>
-            <button
-              className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-              onClick={ () => setDeleteTaskModal(true) }
-            >
-              <DeleteIcon style="w-3 h-3"/>
-            </button>
-          </div>
-        }
-        {
-          taskItem.deadline &&
-            <div className="z-20 text-xs font-extralight flex items-center absolute bottom-3 end-4">
-              <DeadLineIcon style="w-3 h-3 me-1.5" />
-              { getDeadLineLabel() }
+        className={`${isDragging ? 'border-2 border-purple-600 border-opacity-50' : 'hover:border-purple-600 hover:border-opacity-40 bg-slate-800 bg-opacity-50 shadow-md border-2 border-transparent'} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm rounded-md`}     
+        onMouseEnter={ toggleHoverButton }
+        onMouseLeave={ toggleHoverButton }
+        ref={setNodeRef} 
+        style={style} 
+        {...attributes} {...listeners}
+      > 
+        <div
+          className={`${isDragging && 'opacity-0'}`}
+        >
+          <h4 className="w-44 break-words text-zinc-50 text-opacity-90 whitespace-pre-line">
+            { taskItem.title ? taskItem.title : task.title}
+          </h4>
+          {
+          hoverButton &&
+            <div className="z-30 absolute top-1 end-1">
+              <button
+                className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+                onClick={ () => setEditTaskModal(true) }
+              >
+                <EditIcon />
+              </button>
+              <button
+                className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
+                onClick={ () => setDeleteTaskModal(true) }
+              >
+                <DeleteIcon style="w-3 h-3"/>
+              </button>
             </div>
-        }
+          }
+          <div className="z-20 text-xs font-extralight flex items-center absolute bottom-3 end-4 text-zinc-50 text-opacity-90">
+            <div
+              className={`${getPriorityStyle()} rounded-full h-3 w-10`}
+            >
+            </div>
+            {
+              taskItem.deadline &&
+              <div
+                className="flex items-center ms-3"
+              >
+                <DeadLineIcon style="w-3 h-3 me-1.5" />
+                { getDeadLineLabel() }
+              </div>
+            }
+            
+            
+          </div>
+        </div>      
       </div>
-        { 
+      { 
         editTaskModal &&  
           <EditTaskModal 
             setSubmitUpdate={ setSubmitUpdate } 
@@ -194,18 +203,19 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
             setFormInput={ setFormInput }
             setHoverButton={ setHoverButton }
           />
-        }
-      
-        {
-          deleteTaskModal &&
+      }
+      {
+        deleteTaskModal &&
           <DeleteTaskModal 
             loading={ deleteLoading }
             deleteTask={ deleteTask }
             setDeleteTaskModal={ setDeleteTaskModal }
             setHoverButton={ setHoverButton }
           />
-        }
-    </div>
+      }
+    </>
+
+
   )
 }
 

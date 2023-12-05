@@ -1,5 +1,6 @@
 import { Button, Modal } from "flowbite-react";
 
+
 const LogoutModal = ({openModal, setOpenModal, logout}) => {
 
   return (

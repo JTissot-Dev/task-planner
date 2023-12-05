@@ -7,7 +7,7 @@ const PrioritySelect = ({handleSelect, priority}) => {
 
   return (
     <Select
-      className="basic-single w-full"
+      className="basic-single w-full text-sm"
       classNamePrefix="select"
       defaultValue={ defaultPriority }
       isClearable={true}
@@ -22,10 +22,8 @@ const PrioritySelect = ({handleSelect, priority}) => {
       theme={(theme) => ({
         ...theme,
         colors: {
-          // ...theme.colors,
           neutral20: '#475569',
           neutral0: '#1e293b',
-          // primary50: '#e2e8f0',
           primary25: '#334155',
           primary: '#5b21b6',
         },

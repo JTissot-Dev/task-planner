@@ -18,6 +18,7 @@ const List = ({
   setLists,
   tasks,
   setTasks,
+  overlayStyle
 }) => {
 
   const [listItem, setListItem] = useState({
@@ -139,7 +140,7 @@ const List = ({
 
   return (
     <div 
-      className="h-full relative"
+      className={`h-full relative ${overlayStyle ? overlayStyle : ''}`}
       ref={setNodeRef} 
       style={style} 
     >
@@ -162,7 +163,7 @@ const List = ({
             <textarea
               rows="1"
               ref={ titleRef }
-              className="max-h-32 w-full resize-none overflow-y-hidden flex flex-col flex-grow ms-2 py-1 px-0 focus:px-2 bg-transparent hover:cursor-pointer rounded-md border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
+              className="max-h-32 text-zinc-50 text-opacity-90 w-full resize-none overflow-y-hidden flex flex-col flex-grow ms-2 py-1 px-0 focus:px-2 bg-transparent hover:cursor-pointer rounded-md border-0 focus:bg-slate-800 focus:bg-opacity-50 focus:ring-purple-600 focus:border-purple-600"
               value={ listItem.title }
               onChange={ handleTitle }
               onBlur={ updateList }

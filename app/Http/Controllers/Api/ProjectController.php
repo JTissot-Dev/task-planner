@@ -74,10 +74,19 @@ class ProjectController extends Controller
             if (isset($data['name'])) {
                 $project->name = $data['name'];
                 $project->save();
-            } else if (isset($data['lists'])) {
+                return new ProjectResource($project);
+            } 
+            
+            if (isset($data['lists'])) {
                 $project->orderLists($data['lists']);
+                return;
             }
-            return new ProjectResource($project);
+
+            if (isset($data['tasks'])) {
+                $project->orderTasks($data['tasks']);
+                return;
+            }
+            
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Une erreur est survenue lors de la suppression de la tâche'
