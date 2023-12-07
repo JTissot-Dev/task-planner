@@ -36,7 +36,7 @@ const AddTaskItem = ({
     })
     .catch(() => {
       const message = 'Erreur lors de la création de la tâche';
-      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />)
+      setErrorNotification(<ErrorAlert message={ message } dismissAlert={ () => setErrorNotification('') } />);
     })
   }
 
@@ -56,6 +56,7 @@ const AddTaskItem = ({
             className="w-full h-8 text-gray-700 rounded-md focus:ring-purple-600 focus:border-purple-600"
             placeholder="Saisir le titre..."
             ref={ inputTitle }
+            required
           >
           </input>
           <div className="flex justify-end mt-3">

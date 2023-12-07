@@ -54,7 +54,6 @@ const DatePicker = ({handleDeadline, deadline, handleClear}) => {
     var xpathExpression = "//*[text()='Effacer']";
     var result = document.evaluate(xpathExpression, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
     var selectedElement = result.singleNodeValue;
-    console.log(selectedElement);
   
     if (selectedElement) {
       selectedElement.addEventListener('click', handleClear, true);

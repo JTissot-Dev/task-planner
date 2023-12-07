@@ -145,7 +145,7 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
   return (
     <>
       <div
-        className={`${isDragging ? 'border-2 border-purple-600 border-opacity-50' : 'hover:border-purple-600 hover:border-opacity-40 bg-slate-800 bg-opacity-50 shadow-md border-2 border-transparent'} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm rounded-md`}     
+        className={`${isDragging ? 'border-2 border-purple-600 border-opacity-50' : 'hover:border-purple-600 hover:border-opacity-50 bg-slate-800 bg-opacity-50 shadow-md border-2 border-transparent'} relative my-2 px-5 pt-3.5 pb-11 w-full flex justify-start text-sm rounded-md`}     
         onMouseEnter={ toggleHoverButton }
         onMouseLeave={ toggleHoverButton }
         ref={setNodeRef} 
@@ -189,8 +189,6 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
                 { getDeadLineLabel() }
               </div>
             }
-            
-            
           </div>
         </div>      
       </div>
@@ -209,6 +207,7 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
           <DeleteTaskModal 
             loading={ deleteLoading }
             deleteTask={ deleteTask }
+            deleteTaskModal={ deleteTaskModal }
             setDeleteTaskModal={ setDeleteTaskModal }
             setHoverButton={ setHoverButton }
           />

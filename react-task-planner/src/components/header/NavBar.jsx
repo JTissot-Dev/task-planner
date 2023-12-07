@@ -15,7 +15,6 @@ const NavBar = ({setOpenModal, widthSize}) => {
     setDropDown(!dropDown);
   }
 
-  console.log(dropDown);
   const listMenu = [(<HomeMenuIcon />), (<LogoutMenuIcon />)]
   const MenuItems = listMenu.map((MenuIcon, index) => {
     return (

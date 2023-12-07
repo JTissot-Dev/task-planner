@@ -38,8 +38,6 @@ const DefaultLayout = () => {
     } 
   }, [currentProject.id]);
 
-  console.log(token);
-
   useEffect(() => {
     axiosClient.get('/user')
       .then(({data}) => {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ProjectCard from "../components/ProjectCard";
 import axiosClient from "../axios-client";
-import Pagination from "../components/pagination";
+import Pagination from "../components/Pagination";
 import LargeSpinner from "../components/Spinners/LargeSpinner";
 import SearchBarProjects from "../components/SearchBarProjects";
 

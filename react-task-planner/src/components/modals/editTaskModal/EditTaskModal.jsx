@@ -9,19 +9,20 @@ import DatePicker from "./DatePicker";
 
 const EditTaskModal = ({
   setSubmitUpdate,
-  setHoverButton,
   setEditTaskModal,
   formInput,
-  setFormInput
+  setFormInput,
+  setHoverButton
 }) => {
-  
+
+  setHoverButton(false);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
+  
 
   useEffect(() => {
     descriptionRef.current.style.height = 'auto';
     descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`;
-    setHoverButton(false);
   }, [])
 
   useEffect(() => {
@@ -80,7 +81,6 @@ const EditTaskModal = ({
   }
 
   const handleClearDeadline = () => {
-    console.log('toto');
     setFormInput({
       ...formInput,
       deadline: null

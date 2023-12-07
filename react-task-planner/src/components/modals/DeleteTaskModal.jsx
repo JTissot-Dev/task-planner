@@ -5,13 +5,15 @@ import DefaultSpinner from "../Spinners/DefaultSpinner";
 import useOutsideClick from "../../useOutsideClick";
 
 
-const DeleteTaskModal = ({loading, deleteTask, setDeleteTaskModal, setHoverButton}) => {
-  
-  useEffect(() => {
-    setHoverButton(false);
-  }, []);
+const DeleteTaskModal = ({
+  loading, 
+  deleteTask,
+  setDeleteTaskModal, 
+  setHoverButton
+}) => {
 
-  const clickOutside = useOutsideClick(() => setDeleteTaskModal(prev => !prev));
+  setHoverButton(false);
+  const clickOutside = useOutsideClick(() => setDeleteTaskModal(false));
 
   const handleSubmit = e => {
     e.preventDefault();

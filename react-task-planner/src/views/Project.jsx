@@ -183,7 +183,9 @@ const Project = () => {
           { dropDownProjectMenu }
         </div>
       </div>
-      <div className="h-6">
+      <div 
+        className={ `${errorNotification ? "h-10" : "h-6" }` }
+      >
           { errorNotification }
       </div>
       {
@@ -197,7 +199,7 @@ const Project = () => {
           setLists={ setLists }
           tasks={ tasks }
           setTasks={ setTasks }
-          setErrorNotification={ setDropDownMenu }
+          setErrorNotification={ setErrorNotification }
         />
         
         <AddListItem 

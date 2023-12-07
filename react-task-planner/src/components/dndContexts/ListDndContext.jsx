@@ -84,9 +84,6 @@ const listDndContext = ({
     }
 
     axiosClient.put(`/project/${projectId}`, payload)
-    .then(() => {
-      console.log(orderedTasks)
-    })
     .catch(() => {
       setSwapTasks(false);
       const message = 'Erreur lors de la mise à jour';

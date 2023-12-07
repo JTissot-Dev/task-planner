@@ -113,7 +113,7 @@ export const NextIcon = () => {
 
 export const BugIcon = () => {
 	return (
-		<svg class="w-4 h-4 text-zinc-50 text-opacity-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 20">
+		<svg className="w-4 h-4 text-zinc-50 text-opacity-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 20">
     	<path 
 				stroke="currentColor" 
 				strokeLinecap="round" 

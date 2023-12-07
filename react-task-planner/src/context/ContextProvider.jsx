@@ -65,7 +65,6 @@ export const ContextProvider = ({children}) => {
     }
     axiosClient.post('/project', payload)
       .then(({data}) => {
-        console.log(data);
         setSideProjects(prevData => [data.data, ...prevData]);
         setCurrentProject(data.data);
         setLoading(false);

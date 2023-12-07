@@ -28,7 +28,6 @@ const SideBar = () => {
     getProjets();
   }, [sideProjects.length]);
 
-  console.log(sideProjects.length)
   
   const filterProjects = (prevProjects, newProjects) => {
     const prevProjectsId = prevProjects.map(prevProject => prevProject.id);

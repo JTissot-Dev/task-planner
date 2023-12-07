@@ -192,6 +192,7 @@ const List = ({
             listId={ listItem.id }
             tasks={ tasks }
             setTasks={ setTasks }
+            setErrorNotification={ setErrorNotification }
           />
         </div>
       </div> 
