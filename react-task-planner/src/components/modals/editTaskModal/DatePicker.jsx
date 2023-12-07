@@ -26,7 +26,6 @@ const DatePicker = ({handleDeadline, deadline, handleClear}) => {
       selected: "bg-purple-800 hover:bg-purple-700",
     },
     icons: {
-      // () => ReactElement | JSX.Element
       prev: () => <PreviousIcon />,
       next: () => <NextIcon />,
     },

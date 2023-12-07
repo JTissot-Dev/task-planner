@@ -11,11 +11,9 @@ const EditTaskModal = ({
   setSubmitUpdate,
   setEditTaskModal,
   formInput,
-  setFormInput,
-  setHoverButton
+  setFormInput
 }) => {
 
-  setHoverButton(false);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   

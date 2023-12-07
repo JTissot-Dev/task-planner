@@ -142,6 +142,16 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
     })
   }
 
+  const handleEditModal = () => {
+    setHoverButton(false);
+    setEditTaskModal(true);
+  }
+
+  const handleDeleteModal = () => {
+    setHoverButton(false);
+    setDeleteTaskModal(true)
+  }
+
   return (
     <>
       <div
@@ -163,13 +173,13 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
             <div className="z-30 absolute top-1 end-1">
               <button
                 className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-                onClick={ () => setEditTaskModal(true) }
+                onClick={ handleEditModal }
               >
                 <EditIcon />
               </button>
               <button
                 className="p-2.5 hover:bg-slate-950 hover:ease-in-out transition duration-200 rounded-lg"
-                onClick={ () => setDeleteTaskModal(true) }
+                onClick={ handleDeleteModal }
               >
                 <DeleteIcon style="w-3 h-3"/>
               </button>
@@ -199,7 +209,6 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
             setEditTaskModal={setEditTaskModal}
             formInput={ formInput }
             setFormInput={ setFormInput }
-            setHoverButton={ setHoverButton }
           />
       }
       {
@@ -207,9 +216,7 @@ const TaskItem = ({task, setTasks, setErrorNotification}) => {
           <DeleteTaskModal 
             loading={ deleteLoading }
             deleteTask={ deleteTask }
-            deleteTaskModal={ deleteTaskModal }
             setDeleteTaskModal={ setDeleteTaskModal }
-            setHoverButton={ setHoverButton }
           />
       }
     </>

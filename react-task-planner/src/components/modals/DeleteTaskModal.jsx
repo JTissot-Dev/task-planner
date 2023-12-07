@@ -8,11 +8,10 @@ import useOutsideClick from "../../useOutsideClick";
 const DeleteTaskModal = ({
   loading, 
   deleteTask,
-  setDeleteTaskModal, 
-  setHoverButton
+  setDeleteTaskModal
 }) => {
 
-  setHoverButton(false);
+  
   const clickOutside = useOutsideClick(() => setDeleteTaskModal(false));
 
   const handleSubmit = e => {
