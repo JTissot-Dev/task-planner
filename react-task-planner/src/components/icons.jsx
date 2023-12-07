@@ -2,7 +2,7 @@ export const ShowPasswordIcon = ({ onMouseEnter, onMouseLeave }) => {
 	return (
 			<>
 				<svg 
-					className="w-6 h-6 absolute bottom-2 end-2 text-gray-600 dark:text-white" 
+					className="w-6 h-6 absolute bottom-2 end-2 text-gray-600 dark:text-white hover:cursor-pointer" 
 					aria-hidden="true" 
 					xmlns="http://www.w3.org/2000/svg" 
 					fill="none" 

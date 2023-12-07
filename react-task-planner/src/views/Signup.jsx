@@ -83,9 +83,8 @@ const Signup = () => {
         setToken(data.token);
         setLoading(false);
       })
-      .catch(error => {
+      .catch(({response}) => {
         setLoading(false);
-        const response = error.response;
         if (response && response.status === 422) {
           if (response.data.errors.email) {
             setSignupError("Erreur lors de l'envoi du formulaire");

@@ -37,7 +37,6 @@ const Login = () => {
       .catch(({response}) => {
         setLoading(false);
         if (response && response.status === 422) {
-          console.log(response);
           if (response.data.errors) {
             setLoginError(response.data.errors);
           } else {
