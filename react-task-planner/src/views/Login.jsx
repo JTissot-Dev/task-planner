@@ -34,10 +34,10 @@ const Login = () => {
         setToken(data.token);
         setLoading(false);
       })
-      .catch(error => {
+      .catch(({response}) => {
         setLoading(false);
-        const response = error.response;
         if (response && response.status === 422) {
+          console.log(response);
           if (response.data.errors) {
             setLoginError(response.data.errors);
           } else {
