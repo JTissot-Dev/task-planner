@@ -36,12 +36,9 @@ const Login = () => {
       })
       .catch(({response}) => {
         setLoading(false);
+        console.log(response)
         if (response && response.status === 422) {
-          if (response.data.errors) {
-            setLoginError(response.data.errors);
-          } else {
-            setLoginError(response.data.message);
-          }
+          setLoginError('Email ou mot de passe invalide');
         }
       })
   }
