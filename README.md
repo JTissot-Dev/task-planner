@@ -102,3 +102,15 @@ It's time to test the app !
 
 ### First connection
 
+To access the app for the first time, just create an account from signup page
+<br>
+<br>
+<div align="center">
+  <img src="https://github.com/JTissot-Dev/task-planner/blob/resource-readme/readme-resources/Screen_signup.jpg?raw=true" width="90%">
+</div>
+<br>
+<br>
+
+## Contact
+
+Jérôme Tissot - jerome.tissot@lamache.org
