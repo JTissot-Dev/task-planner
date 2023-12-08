@@ -32,4 +32,61 @@ The following instructions will show you how to run it in your local environment
 
 ### Prerequisites
 Set up:
+* <a href="https://nodejs.org/dist/v16.17.1/"> Node.js 16.17.1 </a>
 * <a href="https://www.apachefriends.org/fr/download.html"> XAMPP 8.2.12 </a>
+* <a href="https://getcomposer.org/download/"> Composer 2.5.8 </a>
+
+### Installation
+1. Clone the repository
+   ```sh
+   git clone https://github.com/JTissot-Dev/task-planner.git
+   ```
+2. Move to the application directory
+   ```sh
+   cd task-planner
+   ```
+3. Install PHP dependancies
+   ```sh
+   composer install
+   ```
+4. Create .env file
+   ```sh
+   touch .env
+   ```
+5. Copy the content of .env.example file in .env file and adjust database variable to fit your MySQL configuration
+   ```sh
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=laravel # Name of your MySQL database
+    DB_USERNAME=root # If you have define a username
+    DB_PASSWORD= # If you have define a password
+   ```
+6. Launch database migration
+   ```sh
+    php artisan migrate
+   ```
+7. (optional) Create fake data in database
+   ```sh
+    php artisan db:seed
+   ```
+8. Now, the backend of the application is ready to run, you can start Laravel's local development server
+   ```sh
+    php artisan serve
+   ```
+9. Let's start the frontend installation, move to the vite-react application
+   ```sh
+    cd react-task-planner
+   ```
+10. Install Node.js dependancies
+       ```sh
+        npm install
+       ```
+11. Create .env file
+       ```sh
+        touch .env
+       ```
+12. Copy the content of .env.example file in .env file
+       ```sh
+        VITE_API_BASE_URL=http://localhost:8000
+       ```
