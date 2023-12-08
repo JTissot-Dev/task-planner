@@ -74,7 +74,7 @@ Set up:
    ```sh
     php artisan serve
    ```
-9. Let's start the frontend installation, move to the vite-react application
+9. Let's start the frontend installation, move to the react application directory
    ```sh
     cd react-task-planner
    ```
@@ -90,3 +90,15 @@ Set up:
        ```sh
         VITE_API_BASE_URL=http://localhost:8000
        ```
+13. At this point, the app should be properly installed on your device, now, you juste have to run Vite's development server
+       ```sh
+        npm run dev
+       ```
+
+
+## Usage
+
+It's time to test the app !
+
+### First connection
+
